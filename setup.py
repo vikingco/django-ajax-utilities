@@ -11,19 +11,17 @@ setup(
     packages = find_packages('src'),
     package_data = {'ajax_utilities': [
                 'static/*.js', 'static/*/*.js', 'static/*/*/*.js',
-                'templates/*.html', 'static/*/*.html', 'static/*/*/*.html'
+                'templates/*.html', 'templates/*/*.html', 'templates/*/*/*.html'
                 ],},
+    zip_safe=False, # Don't create egg files, Django cannot find templates in egg files.
     include_package_data=True,
     package_dir = {'': 'src'},
     classifiers = [
-        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
         'Operating System :: OS Independent',
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Topic :: Software Development :: Internationalization',
     ],
 )
 

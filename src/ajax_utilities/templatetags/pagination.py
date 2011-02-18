@@ -51,7 +51,7 @@ class PaginateNode(template.Node):
             return u''
 
         context = {
-                'request': context['request'],
+                'request': page.request,
                 'preload': self.preload,
                 'current': page.number,
                 'total': page.paginator.num_pages,
