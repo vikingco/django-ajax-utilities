@@ -1,0 +1,240 @@
+============================================================================
+Django AJAX Utilities
+============================================================================
+
+A few utilities for making pagination and tabbing easier.  Everything should
+work with and without javascript. If javascript is enabled, several features
+like preloading can be obtained.
+
+Currently, we have:
+ 1. pagination
+ 2. tabbing
+ 3. xhr: for loading a part of the page delayed through AJAX, when it is heavy
+         to render.
+
+DEPENDENCIES:
+ - JQuery Javascript Library
+ - {% macro %} and {% call %} template tags:
+      https://github.com/citylive/Django-Template-Tags/tree/master/templatetags
+
+
+AUTHORS:
+ - Jonathan Slenders, City Live
+ - Parts were inspired by this script: http://djangosnippets.org/snippets/773/
+ - Parts were inspired by Django's pagination 
+
+-------------
+1. Pagination
+-------------
+
+In settings.py, configure the styling of the paginator.
+
+    > PAGINATOR_STYLE = 'glossyp' # 'glossyp' or 'digg'
+
+
+In views.py
+
+    > from glossyp_pagination import paginator
+    > 
+    > # ... read objects (Query list or other iterable object)
+    > objects = range(0, 100)
+    > 
+    > # Paginate
+    > paginated_objects = paginator.paginate(request, objects, 25,
+    >         query_string_parameters= {'order_by': order_by, 'by': by },
+    >                 use_get_parameters=False,
+    >                         page_variable='page1')
+    > 
+    > context = { 'paginated_objects': paginated_objects }
+
+
+25 tells the paginator to show no more than 25 objects per page.
+use_get_parameters is optional, when set True, it will add all the parameters
+of the current query string (request.METAQUERY_STRING) automatically to the
+paginator links.  query_string_parameters is also optional, this are other
+parameters to add to the query string of the links.  page_variable is optional
+too. It's only required when several paginators are combined at the same page.
+The variable should be unique for each paginator.
+
+
+In the template:
+
+    > {% load ajax_utilities %}
+    > {% paginate paginated_objects %}
+    >    ...
+    >    {% for object in paginated_objects.object_list %}
+    >       ...
+    >    {% endfor %}
+    >    ...
+    > {% endpaginate %}
+
+
+In the base template, add this script:
+
+    > <script type="text/javascript" src="{{ STATIC_URL }}js/ajax-utilities/pagination.js"></script>  
+
+
+This javascript code will look for the previous and next link, and it will
+preload these two pages. When one of these links is clicked, the paginator body
+of the preloaded page shall be put into the body of the currently visible page.
+
+If you have additional navigation links inside the paginator body, like
+ordering column headers. Place the links in a container, classnamed
+"pagination-helper". This will make them use ajax too.
+
+    > <div class="pagination-helper">
+    >   <a href="{{ request.path }}?order_by_name">...</a>
+    > </div>
+
+
+It is also possible to override te style defined in the settings.py, by
+defining it in the {% paginate %} template tag. (Add style="digg" or
+style="glossyp")
+
+    > {% paginate paginated_objects style="digg" %}
+    >    ...
+    > {% endpaginate %}
+
+
+The search results of a GET form can be retreived through AJAX, similar to
+loading any other page. The form should have action="?" and method="get"
+parameters. When enter has been pressed in this form, only the body of the paginator
+will be reloaded, leaving the rest of the web page intact.
+
+    > <form method="get" action="?" class="pagination-form">
+    > <label><input type="text" name="q" value="{{ q }}" /></label>
+    > </form>
+
+
+In Javascript:
+
+If you ever need to execute custom JS code when the paginator has replaced its
+body; use the following javascript code:
+    
+    > function handler(e, containers)
+    > {
+    >   // code to be excuted when the paginator switches from page ...
+    >   // `containers` is an Array of elements (jquery items) where content may have been changed.
+    > }
+    > $(document).bind('paginatorPageReplaced', handler);
+
+
+If you want to delay the rendering of the paginator, because it contains some
+heavy queries, nest the paginator in an {% xhr %} template tag as follows:
+(Nesting the other way around is not yet possible, and probably never will be.)
+
+    > {% load ajax_utilities %}
+    > {% xhr %}
+    >    {% paginate paginator %}
+    >        ...
+    >    {% endpaginate %}
+    > {% endxhr %}
+
+
+Additional note:
+To allow bookmarking of pages, the currently visible page is appended to `window.location.hash`
+
+
+
+-------------
+1. Tabbing
+-------------
+
+In the template:
+
+    > {% load ajax_utilities %}
+    > {% tabpage %}
+    >   {% tabs %}
+    >     <ul>
+    >       <li class="selected"><a href="...">...</a></li>
+    >       <li class=""><a href="...">...</a></li>
+    >       <li class=""><a href="...">...</a></li>
+    >     </ul>
+    >   {% endtabs %}
+    >   {% tabcontent %}
+    >      {% block tab_content %}
+    >          inherit this template and fill in the tab content by creating a block named 'tab_content'.
+    >      {% enblock %}
+    >   {% endtabcontent %}
+    > {% endtabpage %}
+    > 
+    > <script type="text/javascript" src="{{ STATIC_URL }}js/ajax-utilities/tabbing.js"></script>
+
+
+This is usually the base template. Every tab matches a separate view, which
+renders a template, derived from this base template. It will fill in the block
+tab_content, and mark the tab as "selected".
+
+
+If you want a link inside a tab page to be opened inside the same tab, use the
+tabbing-helper-class:
+
+
+    > <a class="tabbing-helper" href="..."> (something which opens in this tab) </a> 
+
+
+
+In Javascript:
+
+    >  function handler(e, containers)
+    >  {
+    >    // code to be excuted when the paginator switches from page ...
+    >    // `containers` is an Array of elements (jquery items) where content may have been changed.
+    >  }
+    >  $(document).bind('tabLoaded', handler);
+
+
+
+-------------
+1. xhr
+-------------
+
+This is an AJAX optimazation for heavy web pages. The {% xhr %} template tags
+marks a section of the template to be rendered during a later XML HTTP Request
+(AJAX).
+
+So, actually, every view which template contains {% xhr %} is rendered twice.
+First without the slow, heavy content, where a placeholder <div> is inserted,
+and later on, rendering everything.
+
+
+Insert the following scripts to your HTML:
+
+    > <script type="text/javascript" src="{{ STATIC_URL }}/js/ajax-utilities/xhr.js"></script>
+
+
+Mark the slow parts with {% xhr %}:
+
+    > {% load xhr %}
+    > ... some content ...
+    >
+    > {% xhr %}
+    >    Very slow content
+    > {% else %}
+    >    Loading, ...  (insert loading message or images, ... here)
+    > {% endxhr %}
+    >
+    > ... some content ...
+
+
+The {% else %} part can be omitted, or it can contain a loading message.
+
+If the slow content depends on calculations in the view, which are not
+necessary for the other content. Make sure to not execute them during the first
+run in the view:
+
+    > def view(request):
+    >     if 'xhr' in request.REQUEST:
+    >        do_slow_calculations()
+    > 
+    >     return ...
+
+
+In Javascript:
+
+    > function handler()
+    > {
+    >    ... (code to be excuted when the xhr content has been loaded) ...
+    >    $('.xhr_container').each(function () { ... } );
+    > }
+    > $(document).bind('xhrLoaded', handler);

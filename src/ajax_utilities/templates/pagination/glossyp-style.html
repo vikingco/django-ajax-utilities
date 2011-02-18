@@ -1,0 +1,28 @@
+{% load macro i18n call %}
+
+{% macro "header" %}
+	{% ifnotequal total 1 %}
+		<div class="pagination{% if preload %} pagination_preload{% endif %}"><p>
+			{% if prev_page %}
+				<a class="prev" href="{{ request.path }}{% call query_string prev_page %}">&laquo; {% trans "previous" %}</a>
+			{% endif %}
+				{% blocktrans %}Page <strong>{{ current }}</strong> of <strong>{{ total }}</strong>{% endblocktrans %}
+			{% if next_page %}
+				<a class="next" href="{{ request.path }}{% call query_string next_page %}">{% trans "next" %} &raquo;</a>
+			{% endif %}
+		</p></div>
+	{% endifnotequal %}
+{% endmacro %}
+
+
+<div class="paginate-container paginate-glossyp-style">
+	{% callmacro "header" %}
+		{{ body|safe }}
+	{% callmacro "header" %}
+</div>
+
+<div class="paginate-loading" style="display: none; ">
+	<div style="margin: 50px;">
+		<img src="{{ MEDIA_URL }}common/img/loader.gif" alt="" /> {% trans "Loading page" %}...
+	</div>
+</div>

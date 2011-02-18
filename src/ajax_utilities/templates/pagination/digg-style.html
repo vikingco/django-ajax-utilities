@@ -1,0 +1,44 @@
+{% load i18n macro call %}
+
+{% macro "header" %}
+    <div class="pagination{% if preload %} pagination_preload{% endif %}">
+        {% ifnotequal total 1 %}
+            <strong>{% trans "Pages:" %}</strong>
+            {% if prev_page %}
+                <a class="prev" href="{{ request.path }}{% call query_string prev_page %}">&laquo; {% trans "previous" %}</a>
+            {% endif %}
+            {% for page_index in page_range %}
+                {% if not page_index %}
+                    ...
+                {% else %}
+                    {% ifequal page_index current %}
+                        <span class="current">{{ page_index }}</span>
+                    {% else %}
+                            <a
+                        {% ifequal page_index prev_page %}
+                            class="prev"
+                        {% else %}{% ifequal page_index next_page %}
+                            class="next"
+                        {% endifequal %}{% endifequal %}
+                            href="{{ request.path }}{% call query_string page_index %}">{{ page_index }}</a>
+                    {% endifequal %}
+                {% endif %}
+            {% endfor %}
+            {% if next_page %}
+                  <a class="next" href="{{ request.path }}{% call query_string next_page %}">{% trans "next" %} &raquo;</a>
+            {% endif %}
+        {% endifnotequal %}
+    </div>
+{% endmacro %}
+
+<div class="paginate-container paginate-digg-style">
+    {% callmacro "header" %}
+        {{ body|safe }}
+    {% callmacro "header" %}
+</div>
+
+<div class="paginate-loading" style="display: none; ">
+    <div style="margin: 50px;">
+        <img src="{{ MEDIA_URL }}common/img/loader.gif" alt="" /> {% trans "Loading page" %}...
+    </div>
+</div>

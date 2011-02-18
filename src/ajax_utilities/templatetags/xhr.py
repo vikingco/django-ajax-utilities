@@ -1,0 +1,54 @@
+# {% xhr %} template tag.
+# Skip rendering, but replace output with placeholder which will load the content
+# through AJAX later on.
+
+# {% xhr %}
+#    ...
+# {% else %}
+#    ...
+# {% endxhr %}
+
+# Author: Jonathan Slenders, City Live
+from django.template import Library, Node, resolve_variable, Template, loader
+from django.conf import settings
+
+register = Library()
+
+class XhrNode(Node):
+    def __init__(self, xhr_nodelist, else_nodelist):
+        self.xhr_nodelist = xhr_nodelist
+        self.else_nodelist = else_nodelist
+
+    def render(self, context):
+        container = '<div class="xhr_container">%s</div>'
+
+        # When this is a XHR request, render the real content
+        if 'request' in context and 'xhr' in context['request'].REQUEST:
+            return container % self.xhr_nodelist.render(context)
+        # Otherwise, render a loading placeholder
+        else:
+            if self.else_nodelist:
+                return container % self.else_nodelist.render(context)
+            elif hasattr(settings, 'XHR_LOADING_TEMPLATE'):
+                return container % loader.get_template(settings.XHR_LOADING_TEMPLATE).render(context)
+            else:
+                return container % 'Loading...'
+
+
+@register.tag
+def xhr(parser, token):
+    # Nodelist
+    xhr_nodelist = parser.parse(('endxhr', 'else' ))
+    else_nodelist = None
+
+    if parser.tokens[0].contents == 'else':
+        parser.delete_first_token()
+
+        else_nodelist = parser.parse(('endxhr',))
+        parser.delete_first_token()
+    else:
+        parser.delete_first_token()
+
+    # Return meta node
+    return XhrNode(xhr_nodelist, else_nodelist)
+
