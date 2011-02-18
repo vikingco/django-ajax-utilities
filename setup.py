@@ -9,7 +9,7 @@ setup(
     long_description = open('README','r').read(),
     author = 'Jonathan Slenders, City Live nv',
     packages = find_packages('src'),
-    package_data = {'ajax_utilities': [
+    package_data = {'django_ajax': [
                 'static/*.js', 'static/*/*.js', 'static/*/*/*.js',
                 'templates/*.html', 'templates/*/*.html', 'templates/*/*/*.html'
                 ],},

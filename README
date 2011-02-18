@@ -34,13 +34,13 @@ In settings.py, configure the styling of the paginator.
 
 In views.py
 
-    > from glossyp_pagination import paginator
+    > from django_ajax.pagination import paginate
     > 
     > # ... read objects (Query list or other iterable object)
     > objects = range(0, 100)
     > 
     > # Paginate
-    > paginated_objects = paginator.paginate(request, objects, 25,
+    > paginated_objects = paginate(request, objects, 25,
     >         query_string_parameters= {'order_by': order_by, 'by': by },
     >                 use_get_parameters=False,
     >                         page_variable='page1')
