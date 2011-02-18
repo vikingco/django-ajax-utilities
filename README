@@ -27,9 +27,10 @@ AUTHORS:
 1. Pagination
 -------------
 
-In settings.py, configure the styling of the paginator.
+In settings.py, configure the styling of the paginator, and add this application:
 
     > PAGINATOR_STYLE = 'glossyp' # 'glossyp' or 'digg'
+    > INSTALLED_APPS += ('django_ajax',)
 
 
 In views.py
