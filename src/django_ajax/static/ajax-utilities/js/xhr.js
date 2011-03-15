@@ -61,12 +61,12 @@ $(function() {
                 }
 
                 $.ajax({
-                        type: 'GET',
-                        url: url,
-                        datatype: "html",
-                        cache: true,
-                        success: handler,
-                        error: errorHandler
+                        'type': 'GET',
+                        'url': url,
+                        'datatype': "html",
+                        'cache': true,
+                        'success': handler,
+                        'error': errorHandler
                 });
             }
    }
