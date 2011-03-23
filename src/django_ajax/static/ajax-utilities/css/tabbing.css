@@ -1,0 +1,32 @@
+/* Example CSS for tab pages
+ *
+ * Author: Jonathan Slenders, City Live nv
+ *
+ * */
+
+div.tabbing-tabs ul li { display: inline; }
+div.tabbing-tabs ul li a
+{
+    padding: 5px 12px;
+    display: block;
+    float: left;
+    margin-right: 0px;
+    border-top: 1px solid #EEE;
+    border-right: 1px solid #EEE;
+    font-size: 12px;
+    text-decoration: none;
+    color: #888;
+}
+
+div.tabbing-tabs ul li.selected a
+{
+    font-size: 13px;
+    border-top: 1px solid #EEE;
+    background-color: #f8f8f8;
+    font-weight: bold;
+    color: #333;
+    border-top: 1px solid #8f8f8f;
+}
+
+div.tabbing-tabs ul li a:hover { text-decoration: none; background: #F9f9f9; color: #000; }
+div.tabbing-content { clear: both; border: 1px solid #F9F9F9; padding: 10px; }

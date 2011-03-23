@@ -1,0 +1,122 @@
+html, body
+{
+    height: 100%;
+}
+
+#mbox_overlay
+{
+    background: #666;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: none;
+    z-index: 2000;
+    text-align: left;
+}
+
+#mbox_wrap
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2001;
+}
+
+#mbox
+{
+    position: relative;
+}
+
+#mbox_wrap .mbox_body {
+    background: #FFF;
+    position: relative;
+}
+
+#mbox_wrap .mbox_tl,
+#mbox_wrap .mbox_tr,
+#mbox_wrap .mbox_bl,
+#mbox_wrap .mbox_br {
+    height: 10px;
+    width: 10px;
+    overflow: hidden;
+    padding: 0;
+}
+
+#mbox_wrap .mbox_b,
+#mbox_wrap .mbox_t,
+#mbox_wrap .mbox_r,
+#mbox_wrap .mbox_l {
+    background:url('../img/modybox/b.png');
+}
+
+#mbox_wrap .mbox_tl {
+    background:url('../img/modybox/tl.png');
+}
+
+#mbox_wrap .mbox_tr {
+    background:url('../img/modybox/tr.png');
+}
+
+#mbox_wrap .mbox_bl {
+    background:url('../img/modybox/bl.png');
+}
+
+#mbox_wrap .mbox_br {
+    background:url('../img/modybox/br.png');
+}
+
+#mbox_wrap .mbox_footer
+{
+    padding: 10px 5px 0 0;
+    text-align: right;
+    border-top: 1px solid #DDD;
+}
+
+#mbox_wrap .mbox_body
+{
+    background: #EEE;
+    position: relative;
+}
+
+#mbox_wrap .mbox_content
+{
+    background: #FFF;
+    padding: 10px 17px 10px 5px;
+    overflow: auto;
+}
+
+#mbox_wrap .mbox_title
+{
+    background: #347695;
+    padding: 8px 5px;
+    color: #FFF;
+    font-size: 14px;
+
+    -webkit-transition: background 0.3s ease;
+    -moz-transition: background 0.3s ease;
+    -o-transition: background 0.3s ease;
+    transition: background 0.3s ease;
+}
+
+#mbox_wrap.mbox_error .mbox_title
+{
+    background-color: #953434;
+}
+#mbox_wrap.mbox_error .mbox_content
+{
+    color: #953434;
+}
+
+
+#mbox_wrap #mbox_table td,
+#mbox_wrap #mbox_table th
+{
+    padding: 0px;
+}
+
+* html div#mbox_overlay {
+	position: absolute;
+	height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
