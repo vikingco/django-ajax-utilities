@@ -10,6 +10,8 @@ setup(
     packages = find_packages('src'),
     package_data = {'django_ajax': [
                 'static/*.js', 'static/*/*.js', 'static/*/*/*.js',
+                'static/*.css', 'static/*/*.css', 'static/*/*/*.css',
+                'static/*.png', 'static/*/*.png', 'static/*/*/*.png', 'static/*/*/*/*.png',
                 'templates/*.html', 'templates/*/*.html', 'templates/*/*/*.html'
                 ],},
     zip_safe=False, # Don't create egg files, Django cannot find templates in egg files.

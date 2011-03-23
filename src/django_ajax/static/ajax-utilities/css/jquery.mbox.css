@@ -48,23 +48,23 @@ html, body
 #mbox_wrap .mbox_t,
 #mbox_wrap .mbox_r,
 #mbox_wrap .mbox_l {
-    background:url('../img/modybox/b.png');
+    background:url('../img/jquery.mbox/b.png');
 }
 
 #mbox_wrap .mbox_tl {
-    background:url('../img/modybox/tl.png');
+    background:url('../img/jquery.mbox/tl.png');
 }
 
 #mbox_wrap .mbox_tr {
-    background:url('../img/modybox/tr.png');
+    background:url('../img/jquery.mbox/tr.png');
 }
 
 #mbox_wrap .mbox_bl {
-    background:url('../img/modybox/bl.png');
+    background:url('../img/jquery.mbox/bl.png');
 }
 
 #mbox_wrap .mbox_br {
-    background:url('../img/modybox/br.png');
+    background:url('../img/jquery.mbox/br.png');
 }
 
 #mbox_wrap .mbox_footer
