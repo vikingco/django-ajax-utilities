@@ -7,6 +7,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.http import urlencode
 from django.utils.translation import ugettext as _
+from django_template_tags.template_callable import template_callable
 
 register = template.Library()
 
@@ -58,7 +59,7 @@ class PaginateNode(template.Node):
                 'body': self.nodelist.render(context),
                 'prev_page': page.previous_page_number() if page.has_previous() else None,
                 'next_page': page.next_page_number() if page.has_next() else None,
-                'query_string': lambda page_number: self._querystring(page, page_number),
+                'query_string': template_callable(lambda page_number: self._querystring(page, page_number)),
                 'MEDIA_URL': settings.MEDIA_URL,
             }
 
