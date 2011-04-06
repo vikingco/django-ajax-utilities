@@ -12,6 +12,7 @@ setup(
                 'static/*.js', 'static/*/*.js', 'static/*/*/*.js',
                 'static/*.css', 'static/*/*.css', 'static/*/*/*.css',
                 'static/*.png', 'static/*/*.png', 'static/*/*/*.png', 'static/*/*/*/*.png',
+                'static/*.gif', 'static/*/*.gif', 'static/*/*/*.gif', 'static/*/*/*/*.gif',
                 'templates/*.html', 'templates/*/*.html', 'templates/*/*/*.html'
                 ],},
     zip_safe=False, # Don't create egg files, Django cannot find templates in egg files.

@@ -23,6 +23,6 @@
 
 <div class="paginate-loading" style="display: none; ">
 	<div style="margin: 50px;">
-		<img src="{{ MEDIA_URL }}common/img/loader.gif" alt="" /> {% trans "Loading page" %}...
+        {% include "django-ajax/_loader.html" %}
 	</div>
 </div>

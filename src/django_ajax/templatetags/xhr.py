@@ -29,10 +29,9 @@ class XhrNode(Node):
         else:
             if self.else_nodelist:
                 return container % self.else_nodelist.render(context)
-            elif hasattr(settings, 'XHR_LOADING_TEMPLATE'):
-                return container % loader.get_template(settings.XHR_LOADING_TEMPLATE).render(context)
             else:
-                return container % 'Loading...'
+                template = getattr(settings, 'XHR_LOADING_TEMPLATE', 'django-ajax/_loader.html'):
+                return container % loader.get_template(template).render(context)
 
 
 @register.tag

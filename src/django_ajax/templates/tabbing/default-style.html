@@ -1,18 +1,13 @@
 {% load i18n %}
 
-
 <div class="tabbing {% if no_ajax %}no-ajax{% endif %}">
     <div class="tabbing-tabs">
         {{ tabs|safe }}
     </div>
-
     <div class="tabbing-loader" style="display: none; ">
-        <img src="{{ MEDIA_URL }}common/img/loader.gif" alt="" />
-        {% trans "Loading data..." %}
+        {% include "django-ajax/_loader.html" %}
     </div>
-
     <div class="tabbing-content">
         {{ content|safe }}
     </div>
 </div>
-

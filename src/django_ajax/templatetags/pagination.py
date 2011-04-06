@@ -60,7 +60,8 @@ class PaginateNode(template.Node):
                 'prev_page': page.previous_page_number() if page.has_previous() else None,
                 'next_page': page.next_page_number() if page.has_next() else None,
                 'query_string': template_callable(lambda page_number: self._querystring(page, page_number)),
-                'MEDIA_URL': settings.MEDIA_URL,
+                'MEDIA_URL': getattr(settings, 'MEDIA_URL', ''),
+                'STATIC_URL': getattr(settings, 'STATIC_URL', ''),
             }
 
         # If a style was defined in the template tag, use that style
