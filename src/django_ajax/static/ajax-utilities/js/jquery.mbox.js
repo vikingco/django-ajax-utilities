@@ -119,6 +119,41 @@
             mbox_content = $('#mbox_wrap .mbox_content');
             mbox_footer = $('#mbox_wrap .mbox_footer');
 
+            function make_draggable(handle, container)
+            {
+                var body = $('body');
+
+                handle.mousedown(function(event){ 
+                    var initX = event.pageX - container.offset().left;
+                    var initY = event.pageY - container.offset().top;
+
+                    body.mousemove(function(event){ 
+                        container.css({'position': 'absolute',
+                                       'left': event.pageX - initX, 
+                                       'top': event.pageY - initY
+                                      });
+                    });
+
+                    body.mouseup(function(event)
+                    {
+                        body.unbind('mousemove');
+                        body.unbind(event);
+                    });
+
+                    return false;
+                });
+
+                handle.hover(function(){
+                    handle.css('cursor', 'move');
+                }, function(){ 
+                    handle.css('cursor', 'auto'); 
+                });
+            }
+            
+            make_draggable(mbox_title, mbox_wrap);
+
+            
+
             // Loading image
             loading_image = $('<div class="mbox_loading" />').append(
                     $('<img alt="" src="/media/common/img/modybox/loading.gif" />'));
@@ -143,6 +178,9 @@
 
     DIALOG_INFORMATION = 'info';
     DIALOG_ERROR = 'error';
+    
+    RESPONSE_JSON = 'json'; // example response {'status': 'SUCCESS', 'content': '<p>This is some content!</p>'}
+    RESPONSE_TEXT = 'text';
 
     // Mutex
     var prevent_closing = false;
@@ -172,30 +210,58 @@
             'btn_caption_yes': save_caption,
             'btn_caption_no': _('Cancel'),
             'callback_yes': function() {
+                var close = false;
+                mbox_footer.find('input').attr("disabled", "disabled");
+                
                 $.ajax({
                     'url': url,
-                    'dataType': 'html',
+                    //'dataType': 'html',
                     'type': 'POST',
                     'data': container.find('form').serialize(),
                     'success': function(data) {
-                        container.html(data);
-                        container.find('input[type=submit]').hide();
-                        if (data == 'OK')
-                        {
-                            if (optional_settings["callback_ajax_posted_success"] != undefined)
-                                optional_settings["callback_ajax_posted_success"]($.mbox.element);
+                        close = false;
+                        if (optional_settings["callback_ajax_submit_success"] != undefined)
+                            close = optional_settings["callback_ajax_submit_success"]($.mbox.element, data);
+                        
+                        if (close) {
                             $.mbox.close();
+                        } else {
+                            mbox_footer.find('input').removeAttr("disabled");
+                            container.find('input[type=submit]').hide();
+                            var content = data;
+                            
+                            if (optional_settings['response_type'] == RESPONSE_JSON) {
+                                json = JSON.parse(data);
+                                if (json.status == 'SUCCESS') {
+                                    close = true;
+                                    content = json.content;
+                                }
+                            } else {
+                                if (data == 'OK') {
+                                    close = true;
+                                }
+                            }
+                            
+                            if (close) {
+                                if (optional_settings["callback_ajax_posted_success"] != undefined)
+                                    optional_settings["callback_ajax_posted_success"]($.mbox.element, content);
+                                $.mbox.close();
+                            } else {
+                                container.html(data);
+                                $.mbox.reposition_box();
+                            }
                         }
-                        else
-                            $.mbox.reposition_box();
                     },
                     'error': function() {
+                        mbox_footer.find('input').removeAttr("disabled");
+                        $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
                         container.html(_("Woops! Something went wrong. Please try again later."));
+                        $.mbox.reposition_box();
                     }
                 });
-                return false;
+                return close;
             }
-        }
+        };
 
         var settings = $.extend(false, { }, optional_settings, settings);
         $.mbox(title, container, settings);
@@ -205,16 +271,24 @@
             'url': url,
             'dataType': 'html',
             'success': function(data){
-                container.html(data);
-                container.find('input[type=submit]').hide();
-                $.mbox.reposition_box();
-
-                if (optional_settings["callback_ajax_loaded_success"] != undefined)
-                    optional_settings["callback_ajax_loaded_success"]($.mbox.element);
+                close = false;
+                if (optional_settings["callback_ajax_before_loaded"] != undefined)
+                    close = optional_settings["callback_ajax_before_loaded"]($.mbox.element, data);
+                
+                if (close) {
+                    $.mbox.close();
+                } else {
+                    container.html(data);
+                    container.find('input[type=submit]').hide();
+                    $.mbox.reposition_box();
+    
+                    if (optional_settings["callback_ajax_loaded_success"] != undefined)
+                        optional_settings["callback_ajax_loaded_success"]($.mbox.element, data);
+                }
             },
-            'error': function(data){
+            'error': function(xhr, ajaxOptions, thrownError){
                 $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
-                container.html($('<div/>').addClass("error").text(_('Loading error...')));
+                container.html($('<div/>').addClass("error").html(_('Loading error...')).after($('<p/>').html("<br/>" + xhr.status + " " + thrownError)));
                 $.mbox.reposition_box();
             }
         });
@@ -251,6 +325,7 @@
             'btn_caption_close'   : _('Close'),
             'show_title'          : 'true',
             'show_footer'         : 'true',
+            'response_type'       : RESPONSE_TEXT, // defaults to text so we do not break the current functionality
             'width'               : undefined // automatic width by default
         },
 
@@ -281,6 +356,9 @@
 
                 // resize binding
                 $(window).bind('resize', scroll);
+                
+                scroll();
+                fix_box();
 
                 // Hide flash objects
                 if (isIE)
@@ -391,9 +469,39 @@
 
                 $.mbox.load(settings);
                 $.mbox.show(title, settings);
-
-                $.mbox.show_content(content);
-                fix_box();
+                
+                if (content == undefined) {
+                    var elem_href = $.mbox.element.attr("href");
+                    
+                    if (elem_href.match(/#/)) {
+                        var url    = window.location.href.split('#')[0];
+                        var target = elem_href.replace(url,'');
+                        
+                        $.mbox.show_content($(target).html());
+                        fix_box();
+                    }
+                    else {
+                        $.ajax({
+                            url:    elem_href,
+                            //data:   ,
+                            error:  function() {
+                                $.mbox_error(_('Error'), _('<p>The requested data could not be loaded. Please try again.</p>'));
+                            },
+                            success: function(data, textStatus, XMLHttpRequest) {
+                                if (settings['response_type'] == RESPONSE_JSON) {
+                                    json = JSON.parse(data);
+                                    $.mbox.show_content(json.content);
+                                } else {
+                                    $.mbox.show_content(data);
+                                }
+                                fix_box();
+                            }
+                        });
+                    }
+                } else {
+                    $.mbox.show_content(content);
+                    fix_box();
+                }
 
                 return false;
             });
@@ -465,6 +573,7 @@
 
             // Handle click on this button
             input.click(function() {
+                
                 var do_close = true;
                 if ($.isFunction(click_handler)) {
                     var return_value = click_handler($.mbox.element);
@@ -536,11 +645,15 @@
         //    mbox_content.css('height', '300px');
 
         // Make sure the modybox is not heiger than the window
+        mbox_content.css('height', "");
         height = mbox_body.height();
         if (height > pos[1])
         {
             height = pos[1] * 0.80;
-            mbox_body.css('height', height + 'px');
+            if (height > 40) {
+                height -= 40;
+            }
+            mbox_content.css('height', height + "px");
         }
 
         scroll();
