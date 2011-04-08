@@ -204,6 +204,36 @@
         // Container in which the AJAX view is placed
         var container = $('<div />').html('<img alt="" src="/media/common/img/modybox/loading.gif" />' + _('Loading...'));
 
+        // Process received data after doing ajax post
+        function handle_ajax_answer(data)
+        {
+            // Close dialog when the answer was OK.
+            var close = false;
+            if (optional_settings['response_type'] == RESPONSE_JSON) {
+                json = JSON.parse(data);
+                if (json.status == 'SUCCESS') {
+                    close = true;
+                    content = json.content;
+                }
+            } else if (data == 'OK' || $(data).text() == 'OK')
+                close = true;
+
+            // When closing: callback & close mbox
+            if (close) {
+                if (optional_settings["callback_ajax_posted_success"] != undefined)
+                    optional_settings["callback_ajax_posted_success"]($.mbox.element, content);
+                $.mbox.close();
+
+            // otherwise, replace HTML with received HTML.
+            } else {
+                container.html(data);
+                $.mbox.reposition_box();
+            }
+
+            container.find('input[type=submit]').hide();
+            return close;
+        }
+
         // Create mbox
         var settings = { // These settings cannot be overridden in optional_settings
             'type': DIALOG_YES_NO,
@@ -212,53 +242,58 @@
             'callback_yes': function() {
                 var close = false;
                 mbox_footer.find('input').attr("disabled", "disabled");
+                var form = container.find('form');
                 
-                $.ajax({
-                    'url': url,
-                    //'dataType': 'html',
-                    'type': 'POST',
-                    'data': container.find('form').serialize(),
-                    'success': function(data) {
-                        close = false;
-                        if (optional_settings["callback_ajax_submit_success"] != undefined)
-                            close = optional_settings["callback_ajax_submit_success"]($.mbox.element, data);
-                        
-                        if (close) {
-                            $.mbox.close();
-                        } else {
-                            mbox_footer.find('input').removeAttr("disabled");
-                            container.find('input[type=submit]').hide();
-                            var content = data;
-                            
-                            if (optional_settings['response_type'] == RESPONSE_JSON) {
-                                json = JSON.parse(data);
-                                if (json.status == 'SUCCESS') {
-                                    close = true;
-                                    content = json.content;
-                                }
-                            } else {
-                                if (data == 'OK') {
-                                    close = true;
-                                }
-                            }
+                // When the container contains a form with multipart/form-data,
+                // use an i-frame as target for the form. This is required for
+                // file uploads.
+                if (form.attr('enctype') == 'multipart/form-data')
+                {
+                    // Create iframe
+                    var iframe = $('<iframe id="mbox_iframe" style="display:none;" />');
+                    container.append(iframe);
+
+                    // Set target for form to iframe
+                    form.attr('target', 'mbox_iframe');
+                    form.attr('action', url);
+
+                    // Handle form callback
+                    iframe.load(function(){
+                        mbox_footer.find('input').removeAttr("disabled");
+                        close = handle_ajax_answer(iframe.contents().find('body').html());
+                    });
+
+                    // Submit form
+                    form.submit();
+                }
+                // ... otherwise, do an AJAX post without refreshing the page.
+                else
+                {
+                    $.ajax({
+                        'url': url,
+                        //'dataType': 'html',
+                        'type': 'POST',
+                        'data': form.serialize(),
+                        'success': function(data) {
+                            close = false;
+                            if (optional_settings["callback_ajax_submit_success"] != undefined)
+                                close = optional_settings["callback_ajax_submit_success"]($.mbox.element, data);
                             
                             if (close) {
-                                if (optional_settings["callback_ajax_posted_success"] != undefined)
-                                    optional_settings["callback_ajax_posted_success"]($.mbox.element, content);
                                 $.mbox.close();
                             } else {
-                                container.html(data);
-                                $.mbox.reposition_box();
+                                mbox_footer.find('input').removeAttr("disabled");
+                                close = handle_ajax_answer(data);
                             }
+                        },
+                        'error': function() {
+                            mbox_footer.find('input').removeAttr("disabled");
+                            $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
+                            container.html(_("Woops! Something went wrong. Please try again later."));
+                            $.mbox.reposition_box();
                         }
-                    },
-                    'error': function() {
-                        mbox_footer.find('input').removeAttr("disabled");
-                        $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
-                        container.html(_("Woops! Something went wrong. Please try again later."));
-                        $.mbox.reposition_box();
-                    }
-                });
+                    });
+                }
                 return close;
             }
         };
@@ -271,7 +306,7 @@
             'url': url,
             'dataType': 'html',
             'success': function(data){
-                close = false;
+                var close = false;
                 if (optional_settings["callback_ajax_before_loaded"] != undefined)
                     close = optional_settings["callback_ajax_before_loaded"]($.mbox.element, data);
                 
@@ -281,14 +316,15 @@
                     container.html(data);
                     container.find('input[type=submit]').hide();
                     $.mbox.reposition_box();
-    
+
                     if (optional_settings["callback_ajax_loaded_success"] != undefined)
                         optional_settings["callback_ajax_loaded_success"]($.mbox.element, data);
                 }
             },
             'error': function(xhr, ajaxOptions, thrownError){
                 $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
-                container.html($('<div/>').addClass("error").html(_('Loading error...')).after($('<p/>').html("<br/>" + xhr.status + " " + thrownError)));
+                container.html($('<div/>').addClass("error").html(_('Loading error...'))
+                                .after($('<p/>').html("<br/>" + xhr.status + " " + thrownError)));
                 $.mbox.reposition_box();
             }
         });
