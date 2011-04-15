@@ -38,6 +38,7 @@ class TabPageNode(Node):
                             'tabs': tabs,
                             'content': content,
                             'MEDIA_URL': getattr(settings, 'MEDIA_URL', ''),
+                            'STATIC_URL': getattr(settings, 'STATIC_URL', ''),
                             'no_ajax': self.no_ajax,
                             }))
 
