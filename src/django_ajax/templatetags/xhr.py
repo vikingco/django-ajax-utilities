@@ -30,7 +30,7 @@ class XhrNode(Node):
             if self.else_nodelist:
                 return container % self.else_nodelist.render(context)
             else:
-                template = getattr(settings, 'XHR_LOADING_TEMPLATE', 'django-ajax/_loader.html'):
+                template = getattr(settings, 'XHR_LOADING_TEMPLATE', 'django-ajax/_loader.html')
                 return container % loader.get_template(template).render(context)
 
 
