@@ -4,8 +4,9 @@
 # https://github.com/citylive/django-template-preprocessor
 
 
-
-from template_preprocessor import preproces_tag
+from template_preprocessor import preprocess_tag
+from django.conf import settings
+from django.utils.translation import ugettext as _
 
 
 
