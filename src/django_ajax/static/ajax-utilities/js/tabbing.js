@@ -67,10 +67,21 @@
                 });
             }
 
-            function success_handler()
+            function show_loader()
+            {
+                //loader.show();
+                content_tab.html(loader.html());
+            }
+            function hide_loader()
             {
                 // Hide loading message
-                loader.hide();
+                //loader.hide();
+                content_tab.empty();
+            }
+
+            function success_handler()
+            {
+                hide_loader();
 
                 // Replace tab content and page title
                 content_tab.empty();
@@ -141,7 +152,7 @@
                 {
                     // Show loading message
                     content_tab.empty();
-                    loader.show();
+                    show_loader();
 
                     // Load  content
                     if (! no_ajax)
