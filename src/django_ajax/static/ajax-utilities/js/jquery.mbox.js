@@ -209,6 +209,8 @@
         {
             // Close dialog when the answer was OK.
             var close = false;
+            var content = undefined;
+
             if (optional_settings['response_type'] == RESPONSE_JSON) {
                 json = JSON.parse(data);
                 if (json.status == 'SUCCESS') {
@@ -240,6 +242,7 @@
             'btn_caption_yes': save_caption,
             'btn_caption_no': _('Cancel'),
             'callback_yes': function() {
+
                 var close = false;
                 mbox_footer.find('input').attr("disabled", "disabled");
                 var form = container.find('form');
@@ -278,7 +281,7 @@
                             close = false;
                             if (optional_settings["callback_ajax_submit_success"] != undefined)
                                 close = optional_settings["callback_ajax_submit_success"]($.mbox.element, data);
-                            
+
                             if (close) {
                                 $.mbox.close();
                             } else {
