@@ -253,7 +253,7 @@
                 if (form.attr('enctype') == 'multipart/form-data')
                 {
                     // Create iframe
-                    var iframe = $('<iframe id="mbox_iframe" style="display:none;" />');
+                    var iframe = $('<iframe id="mbox_iframe" name="mbox_iframe" style="display:none;" />');
                     container.append(iframe);
 
                     // Set target for form to iframe
