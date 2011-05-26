@@ -156,7 +156,7 @@
 
             // Loading image
             loading_image = $('<div class="mbox_loading" />').append(
-                    $('<img alt="" src="/media/common/img/modybox/loading.gif" />'));
+                    $('<img alt="" src="/static/ajax-utilities/img/loader.gif" />'));
 
             // Overlay opacity
             mbox_overlay.css('opacity', overlay_opacity);
@@ -202,7 +202,7 @@
 
     $.mbox_ajax_form = function(title, url, save_caption, optional_settings) {
         // Container in which the AJAX view is placed
-        var container = $('<div />').html('<img alt="" src="/media/common/img/modybox/loading.gif" />' + _('Loading...'));
+        var container = $('<div class="mbox_loading" />').html('<img alt="" src="/static/ajax-utilities/img/loader.gif" />' + _('Loading...'));
 
         // Process received data after doing ajax post
         function handle_ajax_answer(data)
@@ -232,6 +232,7 @@
                 $.mbox.reposition_box();
             }
 
+            container.removeClass('mbox_loading');
             container.find('input[type=submit]').hide();
             return close;
         }
