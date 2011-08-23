@@ -194,5 +194,5 @@
                 activate_tabbing_helpers($(this).find('ul li.selected'));
         });
     }
-    handleTabs($(body));
+    handleTabs($('body'));
 }) ();
