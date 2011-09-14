@@ -1,0 +1,57 @@
+.search-complete {
+    border: 1px solid #dddddd;
+    
+    -moz-box-shadow: 0px 3px 4px #CCC; /* Firefox/Mozilla */
+    -webkit-box-shadow: 0px 3px 4px #CCC; /* Safari/Chrome */
+    box-shadow: 0px 3px 4px #CCC; /* Opera */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=120, Color='#CCCCCC')"; /* IE 8 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=120, Color='#CCCCCC'); /* IE 5.5 - 7 */
+}
+.search-complete-name {
+    font-weight: bold;
+}
+.search-complete ul li p {
+    margin: 0;
+    padding: 0;
+}
+.search-complete ul li {
+    list-style-type: none;
+    padding: 10px;
+    margin: 0;
+    cursor: hand;
+    cursor: pointer;
+}
+.search-complete ul li.alternate {
+    background-color: #e6e6e6;
+}
+.search-complete ul li:hover {
+    background-color: #5795b9;
+    color: #FFF;
+}
+.search-complete ul li.alternate:hover {
+    background-color: #5795b9;
+    color: #FFF;
+}
+.search-complete ul li.selected {
+    background-color: #3A6D8C;
+    color: #FFF;
+}
+.search-complete-email {
+    color: #666;
+}
+.search-complete-meta {
+    color: #666;
+}
+input.has-default-value {
+    font-style: italic;
+    color: #888;
+}
+.search-complete li.selected p,
+.search-complete li:hover p {
+    color: #FFF;
+}
+.ac_results_count {
+    font-size: 11px;
+    line-height: 14px;
+    color: #777;
+}
