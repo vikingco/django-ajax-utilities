@@ -185,7 +185,8 @@
                 var preload = ($(this).attr('x:tabbing-preload') == 'true');
 
                 $(this).find('a').eq(0).each(function() {
-                    process_link($(this), this_tab, preload, false);
+                    if (!this_tab.is('.no-ajax'))                        
+                        process_link($(this), this_tab, preload, false);
                 });
             });
 
