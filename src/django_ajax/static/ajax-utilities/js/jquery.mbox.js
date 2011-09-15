@@ -123,13 +123,13 @@
             {
                 var body = $('body');
 
-                handle.mousedown(function(event){ 
+                handle.mousedown(function(event){
                     var initX = event.pageX - container.offset().left;
                     var initY = event.pageY - container.offset().top;
 
-                    body.mousemove(function(event){ 
+                    body.mousemove(function(event){
                         container.css({'position': 'absolute',
-                                       'left': event.pageX - initX, 
+                                       'left': event.pageX - initX,
                                        'top': event.pageY - initY
                                       });
                     });
@@ -145,14 +145,14 @@
 
                 handle.hover(function(){
                     handle.css('cursor', 'move');
-                }, function(){ 
-                    handle.css('cursor', 'auto'); 
+                }, function(){
+                    handle.css('cursor', 'auto');
                 });
             }
-            
+
             make_draggable(mbox_title, mbox_wrap);
 
-            
+
 
             // Loading image
             loading_image = $('<div class="mbox_loading" />').append(
@@ -178,7 +178,7 @@
 
     DIALOG_INFORMATION = 'info';
     DIALOG_ERROR = 'error';
-    
+
     RESPONSE_JSON = 'json'; // example response {'status': 'SUCCESS', 'content': '<p>This is some content!</p>'}
     RESPONSE_TEXT = 'text';
 
@@ -234,6 +234,11 @@
 
             container.removeClass('mbox_loading');
             container.find('input[type=submit]').hide();
+
+            // ajax_loaded callback.
+            if (! close && optional_settings["callback_ajax_loaded"] != undefined)
+                optional_settings["callback_ajax_loaded"]($.mbox.element, container);
+
             return close;
         }
 
@@ -247,7 +252,7 @@
                 var close = false;
                 mbox_footer.find('input').attr("disabled", "disabled");
                 var form = container.find('form');
-                
+
                 // When the container contains a form with multipart/form-data,
                 // use an i-frame as target for the form. This is required for
                 // file uploads.
@@ -313,7 +318,7 @@
                 var close = false;
                 if (optional_settings["callback_ajax_before_loaded"] != undefined)
                     close = optional_settings["callback_ajax_before_loaded"]($.mbox.element, data);
-                
+
                 if (close) {
                     $.mbox.close();
                 } else {
@@ -396,7 +401,7 @@
 
                 // resize binding
                 $(window).bind('resize', scroll);
-                
+
                 scroll();
                 fix_box();
 
@@ -509,14 +514,14 @@
 
                 $.mbox.load(settings);
                 $.mbox.show(title, settings);
-                
+
                 if (content == undefined) {
                     var elem_href = $.mbox.element.attr("href");
-                    
+
                     if (elem_href.match(/#/)) {
                         var url    = window.location.href.split('#')[0];
                         var target = elem_href.replace(url,'');
-                        
+
                         $.mbox.show_content($(target).html());
                         fix_box();
                     }
@@ -613,7 +618,7 @@
 
             // Handle click on this button
             input.click(function() {
-                
+
                 var do_close = true;
                 if ($.isFunction(click_handler)) {
                     var return_value = click_handler($.mbox.element);
