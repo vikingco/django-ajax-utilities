@@ -27,7 +27,14 @@
 
     5. Process a form in the mbox with an AJAX view
 
-            $.mbox_ajax_form('title', 'form.html', 'Save record');
+            $.mbox_ajax_form('title', 'form.html', 'Save record', optional_settings);
+
+
+            * When the answer contains OK, the ajax form will be closed. (and
+            * callback_ajax_posted_success is fired.)
+
+            * When the answer contains form.redirect-form, that form will be
+              automatically submitted and the mbox is closed.
 
  */
 
@@ -234,6 +241,11 @@
 
             container.removeClass('mbox_loading');
             container.find('input[type=submit]').hide();
+
+            // When a redirect form has been received, auto submit.
+            container.find('form.redirect-form').each(function() {
+                    $(this).submit();
+                });
 
             // ajax_loaded callback.
             if (! close && optional_settings["callback_ajax_loaded"] != undefined)
