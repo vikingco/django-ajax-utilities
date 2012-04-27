@@ -29,6 +29,36 @@ html, body
     position: relative;
 }
 
+#mbox #mbox_loader_overlay {
+    position: absolute;
+    background: #FFF;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 103;
+    padding: 25% 0 0 45%;
+}
+
+#mbox_loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    overflow: hidden;
+    color: #FFF;
+}
+
+#mbox_loader div {
+    background: #333;
+    padding: 15px;
+    margin: auto;
+
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    -o-border-radius: 0.5em;
+    border-radius: 0.5em;
+}
+
 #mbox_wrap .mbox_body {
     background: #FFF;
     position: relative;
@@ -48,23 +78,23 @@ html, body
 #mbox_wrap .mbox_t,
 #mbox_wrap .mbox_r,
 #mbox_wrap .mbox_l {
-    background:url('../img/jquery.mbox/b.png');
+    background:url('../img/jquery.modybox/b.png');
 }
 
 #mbox_wrap .mbox_tl {
-    background:url('../img/jquery.mbox/tl.png');
+    background:url('../img/jquery.modybox/tl.png');
 }
 
 #mbox_wrap .mbox_tr {
-    background:url('../img/jquery.mbox/tr.png');
+    background:url('../img/jquery.modybox/tr.png');
 }
 
 #mbox_wrap .mbox_bl {
-    background:url('../img/jquery.mbox/bl.png');
+    background:url('../img/jquery.modybox/bl.png');
 }
 
 #mbox_wrap .mbox_br {
-    background:url('../img/jquery.mbox/br.png');
+    background:url('../img/jquery.modybox/br.png');
 }
 
 #mbox_wrap .mbox_footer
@@ -85,6 +115,7 @@ html, body
     background: #FFF;
     padding: 10px 17px 10px 5px;
     overflow: auto;
+    position: relative;
 }
 
 #mbox_wrap .mbox_title
