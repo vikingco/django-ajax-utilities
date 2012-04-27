@@ -39,7 +39,6 @@
     function handleTabs(content)
     {
         content.find('.tabbing').each(function() {
-
             var tabs = $(this).find('.tabbing-tabs');
             var loader = $(this).find('.tabbing-loader');
             var content_tab = $(this).find('.tabbing-content');
@@ -55,11 +54,12 @@
                 });
             }
 
-            function process_link(link, this_tab, preload, is_helper)
+            function process_link(link, this_tab, preload, is_helper, link_not_via_ajax)
             {
                 var loaded_content = undefined; // Cache
                 var loaded_title = undefined;
                 var href= link.attr('href');
+                var link_no_ajax = no_ajax || link_not_via_ajax;
 
                 if (! is_helper && this_tab.hasClass('selected'))
                 {
@@ -133,7 +133,7 @@
                     });
                 }
 
-                if (preload && ! no_ajax)
+                if (preload && ! link_no_ajax)
                 {
                     if (! loaded_content)
                         load_content(function () { });
@@ -166,10 +166,10 @@
                         show_loader();
 
                         // Load  content
-                        if (! no_ajax)
+                        if (! link_no_ajax)
                             load_content(success_handler);
                     }
-                    return no_ajax;
+                    return link_no_ajax;
                 });
 
                 // If the location hash mathes the path of this tab,
@@ -183,14 +183,14 @@
             $(this).find('.tabbing-tabs ul li').each(function() {
                 var this_tab = $(this);
                 var preload = ($(this).attr('x:tabbing-preload') == 'true');
+                var link_no_ajax = ($(this).attr('x:no-ajax') == 'true');
 
                 $(this).find('a').eq(0).each(function() {
-                    if (!this_tab.is('.no-ajax'))                        
-                        process_link($(this), this_tab, preload, false);
+                    process_link($(this), this_tab, preload, false, link_no_ajax);
                 });
             });
 
-            // And each tabbing helpen inside the tab
+            // And each tabbing helper inside the tab
             if (! no_ajax)
                 activate_tabbing_helpers($(this).find('ul li.selected'));
         });
