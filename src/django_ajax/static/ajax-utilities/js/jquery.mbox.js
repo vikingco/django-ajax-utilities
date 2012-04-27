@@ -310,15 +310,15 @@
                                 mbox_footer.find('input').removeAttr("disabled");
                                 close = handle_ajax_answer(data);
                             }
+                        },
+                        'error': function(jqXHR, textStatus, errorThrown) {
+                            mbox_footer.find('input').removeAttr("disabled");
+                            $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
+                            container.html(_("Woops! Something went wrong. Please try again later."));
+                            $.mbox.reposition_box();
                         }
-                    },
-                    'error': function(jqXHR, textStatus, errorThrown) {
-                        mbox_footer.find('input').removeAttr("disabled");
-                        $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
-                        container.html(_("Woops! Something went wrong. Please try again later."));
-                        $.mbox.reposition_box();
-                    }
-                });
+                    });
+                }
                 return close;
             }
         };
