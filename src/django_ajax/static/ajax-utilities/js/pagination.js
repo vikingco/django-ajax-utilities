@@ -200,7 +200,7 @@
 
             // The digg-paginator also contains direct links to other pages
             // then only the prev and next page.
-            container.find('.pagination a, .pagination-helper a, a.pagination-helper').each(function() {
+            container.find('.pagination a, .pagination-helper a, a.pagination-helper').not(prev).not(next).each(function() {
                 var url = $(this).attr('href');
 
                 $(this).click(function (){
