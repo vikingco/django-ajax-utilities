@@ -223,12 +223,13 @@
             var close = false;
             var content = undefined;
 
-            if (optional_settings['response_type'] == RESPONSE_JSON) {
+            if (optional_settings['response_type'] == RESPONSE_JSON && data[0] == '{') {
                 json = JSON.parse(data);
                 if (json.status == 'SUCCESS') {
                     close = true;
                     content = json.content;
                 }
+                data = json.content;
             } else if (data == 'OK' || $(data).text() == 'OK')
                 close = true;
 
