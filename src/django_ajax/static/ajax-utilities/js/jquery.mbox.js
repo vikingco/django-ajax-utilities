@@ -222,8 +222,9 @@
             // Close dialog when the answer was OK.
             var close = false;
             var content = undefined;
+            var looks_like_json = $.inArray($.trim(data)[0], ['{', '[', '"']) != -1;
 
-            if (optional_settings['response_type'] == RESPONSE_JSON && data[0] == '{') {
+            if (optional_settings['response_type'] == RESPONSE_JSON && looks_like_json) {
                 json = JSON.parse(data);
                 if (json.status == 'SUCCESS') {
                     close = true;
