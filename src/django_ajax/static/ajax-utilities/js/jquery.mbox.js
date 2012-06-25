@@ -89,7 +89,7 @@
 
             $(''
                 + '<div id="mbox_overlay" style="display:none;"></div>'
-                + '<div id="mbox_loader" style="display:none;"><div><img alt="" src="/static/ajax-utilities/img/loader.gif" /> ' + _('Loading...') + '</div></div>'
+                + '<div id="mbox_loader" style="display:none;"><div><img alt="" src="'+STATIC_URL+'ajax-utilities/img/loader.gif" /> ' + _('Loading...') + '</div></div>'
                 + '<div id="mbox_wrap" style="display:none;">'
                 + '<div id="mbox" style="display:none;">'
                 +    '<table id="mbox_table">'
@@ -167,7 +167,7 @@
 
             // Loading image
             loading_image = $('<div class="mbox_loading" />').append(
-                    $('<img alt="" src="/static/ajax-utilities/img/loader.gif" />'));
+                    $('<img alt="" src="'+STATIC_URL+'ajax-utilities/img/loader.gif" />'));
 
             // Overlay opacity
             mbox_overlay.css('opacity', overlay_opacity);
@@ -214,7 +214,7 @@
 
     $.mbox_ajax_form = function(title, url, save_caption, optional_settings) {
         // Container in which the AJAX view is placed
-        var container = $('<div />').html('<img alt="" src="/static/ajax-utilities/img/loader.gif" />' + _('Loading...'));
+        var container = $('<div />').html('<img alt="" src="'+STATIC_URL+'ajax-utilities/img/loader.gif" />' + _('Loading...'));
         
         // Process received data after doing ajax post
         function handle_ajax_answer(data)
