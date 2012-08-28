@@ -31,8 +31,8 @@ var Pagination = new function() {
             });
 			
 		// Make setHash = true the default
-		if (setHash == undefined)
-			setHash = true;
+        if (setHash == undefined)
+            setHash = true;
 
         function scroll(hash)
         {
@@ -243,7 +243,7 @@ var Pagination = new function() {
 
 
 (function() {
-	Pagination.init(true, [ $(document) ]);
+    Pagination.init(true, [ $(document) ]);
 
     // When a XHR block has been loaded, call init() again,
     // because it may contain a paginator.
