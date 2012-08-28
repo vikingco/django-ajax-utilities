@@ -4,21 +4,11 @@
 // Don't wait for the whole page to be loaded.
 // (include script at the bottom of the page.)
 
-(function() {
-
-    init(true, [ $(document) ]);
-
-    // When a XHR block has been loaded, call init() again,
-    // because it may contain a paginator.
-        // The location may have been filled with the tab url, so
-        // don't process it. (xhr can be nested inside tabs, so even in that case.
-    $(document).bind('xhrLoaded', function(e, containers) { init(false, containers); });
-    $(document).bind('tabLoaded', function(e, containers) { init(false, containers); });
-
-
-    function init(processHash, document_containers)
-    {
-        // For each pagination node
+var Pagination = new function() {
+   
+    this.init = function(processHash, document_containers, setHash)
+    {        		
+		// For each pagination node
         var containers = new Array();
         
         // Create new containers Array after each initialisation
@@ -39,6 +29,10 @@
                     set_up(container);
                 }
             });
+			
+		// Make setHash = true the default
+		if (setHash == undefined)
+			setHash = true;
 
         function scroll(hash)
         {
@@ -108,18 +102,20 @@
 
             // Replace page AJAX handler
             function replacePage(url, receivedHtml)
-            {
-                // Set location hash
-                location.hash = 'page:' + url;
+            {				
+				// Set location hash
+				if (setHash)
+					location.hash = 'page:' + url;
+				
 
                 for (var i in containers)
                 {
-                    // Empty the paginate nodes
+					// Empty the paginate nodes
                     containers[i].empty();
                     containers[i].css('height', '');
 
                     // Fill the paginate containers with the new content
-                    $(receivedHtml).find('.paginate-container').eq(i).each(function() {
+                    $(receivedHtml).find('.paginate-container').eq(i).each(function() {						 
                         containers[i].append($(this).html());
                         set_up(containers[i]);
                     });
@@ -164,8 +160,8 @@
             var preload = $('.pagination_preload').size() > 0;
 
             if (preload)
-            {
-                if (prev_url)
+            {                 
+				if (prev_url)
                     ajax(prev_url, function(html)
                     {
                         previousPageHtml = html;
@@ -200,7 +196,7 @@
 
             // The digg-paginator also contains direct links to other pages
             // then only the prev and next page.
-            container.find('.pagination a, .pagination-helper a, a.pagination-helper').not(prev).not(next).each(function() {
+            container.find('.pagination a, .pagination-helper a, a.pagination-helper').each(function() {
                 var url = $(this).attr('href');
 
                 $(this).click(function (){
@@ -213,8 +209,8 @@
                     }
                     else
                         ajax(url, function(html)
-                        {
-                            replacePage(url, html);
+                        {                            
+							replacePage(url, html);
                         });
                     return false;
                 });
@@ -242,5 +238,17 @@
                 }
             });
         }
-    }
+    };
+};
+
+
+(function() {
+	Pagination.init(true, [ $(document) ]);
+
+    // When a XHR block has been loaded, call init() again,
+    // because it may contain a paginator.
+        // The location may have been filled with the tab url, so
+        // don't process it. (xhr can be nested inside tabs, so even in that case.
+    $(document).bind('xhrLoaded', function(e, containers) { Pagination.init(false, containers); });
+    $(document).bind('tabLoaded', function(e, containers) { Pagination.init(false, containers); });
 }) ();
