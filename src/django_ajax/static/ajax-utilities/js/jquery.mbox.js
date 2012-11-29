@@ -30,7 +30,7 @@
             $.mbox_ajax_form('title', 'form.html', 'Save record', optional_settings);
             
             * When the answer contains OK, the ajax form will be closed. (and
-            * callback_ajax_posted_success is fired.)
+            * callback_ajax_posted_success is fired.) 
             
             * When the answer cpmtaoms form.redirect-form, that form will be
             * automatically submitted and the mbox is closed.
