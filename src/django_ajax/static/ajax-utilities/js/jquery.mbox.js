@@ -298,7 +298,7 @@
                 {
                     $.ajax({
                         'url': url,
-                        //'dataType': 'html',
+                        'dataType': 'html',
                         'type': 'POST',
                         'data': form.serialize(),
                         'success': function(data) {
