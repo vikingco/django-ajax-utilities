@@ -30,7 +30,7 @@
             $.mbox_ajax_form('title', 'form.html', 'Save record', optional_settings);
             
             * When the answer contains OK, the ajax form will be closed. (and
-            * callback_ajax_posted_success is fired.)
+            * callback_ajax_posted_success is fired.) 
             
             * When the answer cpmtaoms form.redirect-form, that form will be
             * automatically submitted and the mbox is closed.
@@ -298,7 +298,7 @@
                 {
                     $.ajax({
                         'url': url,
-                        //'dataType': 'html',
+                        'dataType': 'html',
                         'type': 'POST',
                         'data': form.serialize(),
                         'success': function(data) {
@@ -704,8 +704,8 @@
 
         mbox_wrap.css({
 
-        'left' : ((mbox_wrap.width() + 40) > pos[0] ? pos[2] : pos[2] + Math.round((pos[0] - mbox_wrap.width() - 40) / 2)),
-        'top'  : ((mbox_wrap.height() + 50) > pos[1] ? pos[3] : (pos[3] + Math.round((pos[1] - mbox_wrap.height() - 50) / 2)))
+        'left' : ((mbox_wrap.innerWidth() + 40) > pos[0] ? pos[2] : pos[2] + Math.round((pos[0] - mbox_wrap.innerWidth() - 40) / 2)),
+        'top'  : ((mbox_wrap.innerHeight() + 50) > pos[1] ? pos[3] : (pos[3] + Math.round((pos[1] - mbox_wrap.innerHeight() - 50) / 2)))
 
         });
     };
@@ -716,7 +716,7 @@
             var pos = getViewport();
 
             // content width
-            var width = mbox_body.width() + 20;
+            var width = mbox_body.innerWidth() + 20;
 
             // Minimum width
             if (settings == undefined) {
