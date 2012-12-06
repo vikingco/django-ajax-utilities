@@ -29,12 +29,12 @@
  * */
 
 (function() {
-    $(document).bind('tabLoaded', function(e, containers) {
+    /*$(document).bind('tabLoaded', function(e, containers) {
         // Support for nested tab pages, when the content of
         // an parent-tab is loaded, look for child tabs inside.
         for (var i in containers)
             handleTabs(containers[i]);
-    });
+    });*/
 
     function handleTabs(content)
     {
@@ -73,8 +73,9 @@
                     // it should submit to the page where it was originally comming from.
                     // So, prefix it with the current URL
                     $(content_tab).find('form').each(function() {
-                        if ($(this).attr('action').match(/^\?/))
-                            $(this).attr('action', href + $(this).attr('action'))
+                        var action = $(this).attr('action');
+                        if (action !== undefined && action !== false && action.match(/^\?/))
+                            $(this).attr('action', href + action)
                     });
                 }
 
