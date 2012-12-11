@@ -62,8 +62,8 @@
             container.css({
                 'position': 'absolute',
                 'left': widget.offset().left,
-                'top': widget.offset().top + widget.height() + 10,
-                'width': widget.width(),
+                'top': widget.offset().top + widget.innerHeight() + 10,
+                'width': widget.innerWidth(),
                 'background-color': 'white'
             });
             ul.css({
