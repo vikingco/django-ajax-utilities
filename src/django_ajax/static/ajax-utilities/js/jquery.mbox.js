@@ -225,12 +225,18 @@
             var looks_like_json = $.inArray($.trim(data)[0], ['{', '[', '"']) != -1;
 
             if (optional_settings['response_type'] == RESPONSE_JSON && looks_like_json) {
-                json = JSON.parse($('<div/>').html(data).text());
+                var json = JSON.parse(data),
+                    parsed_content = json.content;
+
+                if ((/^&lt;/).test($.trim(parsed_content))) {
+                    parsed_content = $('<div/>').html(parsed_content).text();
+                }
+
                 if (json.status == 'SUCCESS') {
                     close = true;
-                    content = json.content;
+                    content = parsed_content
                 }
-                data = json.content;
+                data = parsed_content;
             } else if (data == 'OK' || $(data).text() == 'OK')
                 close = true;
 
