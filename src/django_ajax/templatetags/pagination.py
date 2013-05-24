@@ -83,7 +83,13 @@ class PaginateNode(template.Node):
         elif style == 'glossyp':
             # Render paginator in glossyp style
             return render_to_string('pagination/glossyp-style.html', context)
-
+        elif style == 'bootstrap':
+            # Render paginator in bootstrap style
+            context.update(self._digg_style_context(
+                        page.number,
+                        page.paginator.num_pages))
+            
+            return render_to_string('pagination/bootstrap-style.html', context)
         else:
             raise Exception('Unknown pagination style: %s' % style)
 
