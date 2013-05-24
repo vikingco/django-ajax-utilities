@@ -12,7 +12,7 @@
 	                    ...
 	                {% else %}
 	                    {% ifequal page_index current %}
-	                        <span class="current">{{ page_index }}</span>
+	                        <li class="active"><span class="current">{{ page_index }}</span></li>
 	                    {% else %}
 	                            <li><a
 	                        {% ifequal page_index prev_page %}
