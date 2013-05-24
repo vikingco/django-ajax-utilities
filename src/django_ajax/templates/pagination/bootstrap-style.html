@@ -8,21 +8,17 @@
 	                <li><a class="prev" href="{{ request.path }}{% call query_string prev_page %}">&laquo; {% trans "previous" %}</a></li>
 	            {% endif %}
 	            {% for page_index in page_range %}
-	                {% if not page_index %}
-	                    ...
-	                {% else %}
-	                    {% ifequal page_index current %}
-	                        <li class="active"><span class="current">{{ page_index }}</span></li>
-	                    {% else %}
-	                            <li><a
-	                        {% ifequal page_index prev_page %}
-	                            class="prev"
-	                        {% else %}{% ifequal page_index next_page %}
-	                            class="next"
-	                        {% endifequal %}{% endifequal %}
-	                            href="{{ request.path }}{% call query_string page_index %}">{{ page_index }}</a></li>
-	                    {% endifequal %}
-	                {% endif %}
+                    {% ifequal page_index current %}
+                        <li class="active"><span class="current">{{ page_index }}</span></li>
+                    {% else %}
+                            <li><a
+                        {% ifequal page_index prev_page %}
+                            class="prev"
+                        {% else %}{% ifequal page_index next_page %}
+                            class="next"
+                        {% endifequal %}{% endifequal %}
+                            href="{{ request.path }}{% call query_string page_index %}">{{ page_index }}</a></li>
+                    {% endifequal %}
 	            {% endfor %}
 	            {% if next_page %}
 	                  <li><a class="next" href="{{ request.path }}{% call query_string next_page %}">{% trans "next" %} &raquo;</a></li>
