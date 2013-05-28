@@ -85,7 +85,7 @@ class PaginateNode(template.Node):
             return render_to_string('pagination/glossyp-style.html', context)
         elif style == 'bootstrap':
             # Render paginator in bootstrap style
-            context.update(self._digg_style_context(
+            context.update(self._bootstrap_style_context(
                         page.number,
                         page.paginator.num_pages))
             
@@ -113,6 +113,39 @@ class PaginateNode(template.Node):
                         query_string = '%s&%s' % (query_string, urlencode({k:v2}))
 
         return query_string
+    
+    def _bootstrap_style_context(self, number, num_pages):
+        """
+        Additional context to be passed to the pagination template:
+        """
+
+        padding = 0
+        margin = 0
+        tail = 1
+        body = 5
+        
+        # put active page in middle of main range
+        main_range = map(int, [
+            math.floor(number-body/2.0)+1,  # +1 = shift odd body to right
+            math.floor(number+body/2.0)])
+        # adjust bounds
+        if main_range[0] < 1:
+            main_range = map(abs(main_range[0]-1).__add__, main_range)
+        if main_range[1] > num_pages:
+            main_range = map((num_pages-main_range[1]).__add__, main_range)
+            
+        # finally, normalize values that are out of bound; this basically
+        # fixes all the things the above code screwed up in the simple case
+        # of few enough pages where one range would suffice.
+        main_range = [max(main_range[0], 1), min(main_range[1], num_pages)]
+
+        # make the result of our calculations available as custom ranges
+        # on the ``Page`` instance.
+        main_range = range(main_range[0], main_range[1]+1)
+                
+        return {
+            'main_range': main_range
+            }
 
 
     def _digg_style_context(self, number, num_pages):

@@ -7,7 +7,7 @@
 	            {% if prev_page %}
 	                <li><a class="prev" href="{{ request.path }}{% call query_string prev_page %}">&laquo; {% trans "previous" %}</a></li>
 	            {% endif %}
-	            {% for page_index in page_range %}
+	            {% for page_index in main_range %}
 	                {% if page_index %}
 	                    {% ifequal page_index current %}
 	                        <li class="active"><span class="current">{{ page_index }}</span></li>
