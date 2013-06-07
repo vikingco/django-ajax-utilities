@@ -495,16 +495,15 @@
             mbox_wrap.find('.mbox_loading').remove();
 
             // Fadeout
-            mbox_wrap.fadeOut(10, function() {
-                mbox_overlay.fadeOut('fast', function() {
-                    // Empty content/title/footer containers
-                    mbox_content.empty();
-                    mbox_title.empty();
-                    mbox_footer.empty();
+            mbox_wrap.fadeOut(10, function() {});
+            mbox_overlay.fadeOut(50, function() {
+                // Empty content/title/footer containers
+                mbox_content.empty();
+                mbox_title.empty();
+                mbox_footer.empty();
 
-                    mbox_wrap.attr('style', '').hide();
-                    mbox_table.attr('style', '');
-                });
+                mbox_wrap.attr('style', '').hide();
+                mbox_table.attr('style', '');
             });
 
             // Show flash objects again
