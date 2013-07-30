@@ -137,6 +137,8 @@ class PaginateNode(template.Node):
         if main_range[1] > num_pages:
             main_range = map((num_pages-main_range[1]).__add__, main_range)
 
+        leading = []
+        trailing = []
         if determine_leading_and_trailing_range:
             # Determine leading and trailing ranges; if possible and appropriate,
             # combine them with the main range, in which case the resulting main
@@ -156,7 +158,7 @@ class PaginateNode(template.Node):
     
     
             if main_range[0] <= tail+margin:
-                leading = []
+                leading = []                
                 main_range = [1, max(body, min(number+padding, main_range[1]))]
                 main_range[0] = 1
             else:
