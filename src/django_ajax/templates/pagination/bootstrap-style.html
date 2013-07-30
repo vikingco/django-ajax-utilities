@@ -1,0 +1,43 @@
+{% load i18n macro call %}
+
+{% macro "header" %}
+    <div class="pagination{% if preload %} pagination_preload{% endif %}">
+        {% ifnotequal total 1 %}
+            <ul>
+	            {% if prev_page %}
+	                <li><a class="prev" href="{{ request.path }}{% call query_string prev_page %}">&laquo; {% trans "previous" %}</a></li>
+	            {% endif %}
+	            {% for page_index in main_range %}
+	                {% if page_index %}
+	                    {% ifequal page_index current %}
+	                        <li class="active"><span class="current">{{ page_index }}</span></li>
+	                    {% else %}
+	                            <li><a
+	                        {% ifequal page_index prev_page %}
+	                            class="prev"
+	                        {% else %}{% ifequal page_index next_page %}
+	                            class="next"
+	                        {% endifequal %}{% endifequal %}
+	                            href="{{ request.path }}{% call query_string page_index %}">{{ page_index }}</a></li>
+	                    {% endifequal %}
+	                {% endif %}
+	            {% endfor %}
+	            {% if next_page %}
+	                  <li><a class="next" href="{{ request.path }}{% call query_string next_page %}">{% trans "next" %} &raquo;</a></li>
+	            {% endif %}
+	        </ul>
+        {% endifnotequal %}
+    </div>
+{% endmacro %}
+
+<div class="paginate-container paginate-bootstrap-style">
+    {% callmacro "header" %}
+        {{ body|safe }}
+    {% callmacro "header" %}
+</div>
+
+<div class="paginate-loading" style="display: none; ">
+    <div style="margin: 50px;">
+        {% include "django-ajax/_loader.html" %}
+    </div>
+</div>
