@@ -24,6 +24,7 @@ $(function() {
                     var newContainers = [];
                     var newContainers2 = [];
 
+                    html = $.trim(html);
                     $(html).find('.xhr_container').each(function(){
                         newContainers.push($(this));
                     });
