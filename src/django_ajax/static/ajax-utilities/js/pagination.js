@@ -115,7 +115,7 @@ var Pagination = new function() {
                     containers[i].css('height', '');
 
                     // Fill the paginate containers with the new content
-					receivedHtml = $.trim(receivedHtml);
+                    receivedHtml = $.trim(receivedHtml);
                     $(receivedHtml).find('.paginate-container').eq(i).each(function() {						 
                         containers[i].append($(this).html());
                         set_up(containers[i]);
