@@ -62,7 +62,7 @@
     };
 
     // gettext wrapper
-    var _ = (typeof gettext == 'undefined' ? function(x) { return x; } : gettext);
+    var gettext = (typeof gettext == 'undefined' ? function(x) { return x; } : gettext);
 
     var overlay_opacity = 0.3;
 
@@ -390,11 +390,11 @@
             'callback_no'         : null,
             'callback_closed_yes' : null,
             'callback_closed_no'  : null,
-            'btn_caption_yes'     : _('Yes'),
-            'btn_caption_no'      : _('No'),
-            'btn_caption_cancel'  : _('Cancel'),
-            'btn_caption_ok'      : _('Ok'),
-            'btn_caption_close'   : _('Close'),
+            'btn_caption_yes'     : gettext('Yes'),
+            'btn_caption_no'      : gettext('No'),
+            'btn_caption_cancel'  : gettext('Cancel'),
+            'btn_caption_ok'      : gettext('Ok'),
+            'btn_caption_close'   : gettext('Close'),
             'show_title'          : 'true',
             'show_footer'         : 'true',
             'response_type'       : RESPONSE_TEXT, // defaults to text so we do not break the current functionality
