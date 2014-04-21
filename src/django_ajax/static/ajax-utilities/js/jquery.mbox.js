@@ -61,8 +61,9 @@
         });
     };
 
+    // FIXME: find a minify-friendly way to make this work
     // gettext wrapper
-    var gettext = (typeof gettext == 'undefined' ? function(x) { return x; } : gettext);
+    // var gettext = eval("(typeof gettext == 'undefined' ? function(x) { return x; } : gettext)");
 
     var overlay_opacity = 0.3;
 
