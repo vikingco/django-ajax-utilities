@@ -89,7 +89,7 @@
 
             $(''
                 + '<div id="mbox_overlay" style="display:none;"></div>'
-                + '<div id="mbox_loader" style="display:none;"><div><img alt="" src="'+STATIC_URL+'ajax-utilities/img/loader.gif" /> ' + _('Loading...') + '</div></div>'
+                + '<div id="mbox_loader" style="display:none;"><div><img alt="" src="'+STATIC_URL+'ajax-utilities/img/loader.gif" /> ' + gettext('Loading...') + '</div></div>'
                 + '<div id="mbox_wrap" style="display:none;">'
                 + '<div id="mbox" style="display:none;">'
                 +    '<table id="mbox_table">'
@@ -214,7 +214,7 @@
 
     $.mbox_ajax_form = function(title, url, save_caption, optional_settings) {
         // Container in which the AJAX view is placed
-        var container = $('<div />').html('<img alt="" src="'+STATIC_URL+'ajax-utilities/img/loader.gif" />' + _('Loading...'));
+        var container = $('<div />').html('<img alt="" src="'+STATIC_URL+'ajax-utilities/img/loader.gif" />' + gettext('Loading...'));
         
         // Process received data after doing ajax post
         function handle_ajax_answer(data)
@@ -271,7 +271,7 @@
         var settings = { // These settings cannot be overridden in optional_settings
             'type': DIALOG_YES_NO,
             'btn_caption_yes': save_caption,
-            'btn_caption_no': _('Cancel'),
+            'btn_caption_no': gettext('Cancel'),
             'callback_yes': function() {
                 var close = false;
                 mbox_footer.find('input').attr("disabled", "disabled");
@@ -326,7 +326,7 @@
                         'error': function(jqXHR, textStatus, errorThrown) {
                             mbox_footer.find('input').removeAttr("disabled");
                             $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
-                            container.html(_("Woops! Something went wrong. Please try again later.") + textStatus + '<br/>' + errorThrown);
+                            container.html(gettext("Woops! Something went wrong. Please try again later.") + textStatus + '<br/>' + errorThrown);
                             $.mbox.reposition_box();
                         }
                     });
@@ -360,7 +360,7 @@
             },
             'error': function(xhr, ajaxOptions, thrownError){
                 $('#mbox_wrap').removeClass("mbox_error").addClass("mbox_error");
-                container.html($('<div/>').addClass("error").html(_('Loading error...')).after($('<p/>').html("<br/>" + xhr.status + " " + thrownError)));
+                container.html($('<div/>').addClass("error").html(gettext('Loading error...')).after($('<p/>').html("<br/>" + xhr.status + " " + thrownError)));
                 $.mbox.reposition_box();
             }
         });
@@ -580,7 +580,7 @@
                             url:    elem_href,
                             //data:   ,
                             error:  function() {
-                                $.mbox_error(_('Error'), _('<p>The requested data could not be loaded. Please try again.</p>'));
+                                $.mbox_error(gettext('Error'), gettext('<p>The requested data could not be loaded. Please try again.</p>'));
                             },
                             success: function(data, textStatus, XMLHttpRequest) {
                                 if (settings['response_type'] == RESPONSE_JSON) {
@@ -630,7 +630,7 @@
             var img = new Image();
 
             img.onerror = function() {
-                $.mbox_error(_('Error'), _('<p>The requested data could not be loaded. Please try again.</p>'));
+                $.mbox_error(gettext('Error'), gettext('<p>The requested data could not be loaded. Please try again.</p>'));
             };
 
             // When the image has been loaded, show in currently displayed mbox
