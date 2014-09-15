@@ -123,8 +123,9 @@
                             if (! loaded_content)
                             {
                                 loaded_content = $(html).find('.tabbing-content').eq(nest_level).html();
-                                //loaded_title = $(html).find('title').html(); // This does not work
-                                loaded_title = html.replace(/\n/g,' ').replace(/.*\<title\>/, '').replace(/\<\/title\>.*/, '');
+
+                                // Find the <title> tag and extract its contents
+                                loaded_title = html.match(/\<title\>([^\<]*)\<\/title\>/gm)[0].replace(/\<\/?title\>/g, '');
                             }
                             success();
                         },
