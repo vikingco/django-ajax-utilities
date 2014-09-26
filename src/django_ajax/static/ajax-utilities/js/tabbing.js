@@ -59,7 +59,7 @@
                 var loaded_content = undefined; // Cache
                 var loaded_title = undefined;
                 var href= link.attr('href');
-                var link_no_ajax = no_ajax || link_not_via_ajax;
+                var link_no_ajax = no_ajax || (link_not_via_ajax === true);
 
                 if (! is_helper && this_tab.hasClass('selected'))
                 {
