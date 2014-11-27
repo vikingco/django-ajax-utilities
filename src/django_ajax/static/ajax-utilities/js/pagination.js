@@ -59,8 +59,9 @@ var Pagination = new function() {
 
             function ajax(url, handler)
             {
-                // URL needs to be absolute
-                if (! url[0] == '/')
+                // URL should start with a slash, but cannot start with two slashes.
+                // (Otherwise we have an XSS vulnerability.)
+                if (url[0] != '/' || url[1] == '/')
                     url = (''+location).replace( /[#\?].*/, '') + url;
 
                 // Append 'xhr' to make sure all content is loaded.
