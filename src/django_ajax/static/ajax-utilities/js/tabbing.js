@@ -159,7 +159,7 @@
                     // Just show the loader, and allow the default
                     // behaviour of the hyperlink.
 
-                    if (loaded_content)
+                    if (loaded_content && !link_no_ajax)
                         success_handler();
                     else
                     {
