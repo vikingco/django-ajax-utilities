@@ -224,7 +224,6 @@
             var close = false;
             var content = undefined;
             var looks_like_json = $.inArray($.trim(data)[0], ['{', '[', '"']) != -1;
-
             if (optional_settings['response_type'] == RESPONSE_JSON && looks_like_json) {
                 var json = JSON.parse(data),
                     parsed_content = json.content;
@@ -236,10 +235,16 @@
                 if (json.status == 'SUCCESS') {
                     close = true;
                     content = parsed_content
+                } else if (json.status == 'REDIRECT' && data.redirect) {
+                    window.location.href = data.redirect;
+                    return true;
+                } else if (json.status == 'RELOAD') {
+                    document.location.reload(true);
                 }
                 data = parsed_content;
-            } else if (data == 'OK' || $(data).text() == 'OK')
+            } else if (data == 'OK' || $(data).text() == 'OK') {
                 close = true;
+            }
 
             // When closing: callback & close mbox
             if (close) {
