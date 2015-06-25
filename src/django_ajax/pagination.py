@@ -132,6 +132,7 @@ def paginate(request,
     if page_num:
         try:
             page_num = int(page_num)
+            page_num = max(page_num, 1) # Make sure page number isn't negative
         except ValueError:
             page_num = 1
     else:
@@ -141,8 +142,19 @@ def paginate(request,
         else:
             page_num = 1
 
+    # Make sure the pagenumber isn't bigger than the number of pages.
+    number_of_pages = paginator.num_pages
+    page_num = min(page_num, number_of_pages)
+
     # Create output page instance
-    output_page = paginator.page(page_num, default_to_last_page)
+    try:
+        output_page = paginator.page(page_num, default_to_last_page)
+    except (EmptyPage, PageNotAnInteger):
+        if default_to_last_page:
+            page_num = paginator.num_pages
+        else:
+            page_num = 1
+        output_page = paginator.page(page_num, default_to_last_page)
 
     # Query string parameters
     output_page.additional_parameters = query_string_parameters or { }
