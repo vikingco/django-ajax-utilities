@@ -1,0 +1,10 @@
+{
+  "name": "django-ajax-utilities",
+  "version": "0.0.0",
+  "homepage": "https://github.com/vikingco/django-ajax-utilities",
+  "private": true,
+  "repostory": {
+    "type": "git",
+    "url": "https://github.com/vikingco/django-ajax-utilities.git"
+  }
+}
