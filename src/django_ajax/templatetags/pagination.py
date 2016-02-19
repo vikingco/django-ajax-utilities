@@ -7,7 +7,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.http import urlencode
 from django.utils.translation import ugettext as _
-from django_template_tags.template_callable import template_callable
+from mvne.templatetags.call import template_callable
 
 register = template.Library()
 
@@ -88,7 +88,7 @@ class PaginateNode(template.Node):
             context.update(self._bootstrap_style_context(
                         page.number,
                         page.paginator.num_pages))
-            
+
             return render_to_string('pagination/bootstrap-style.html', context)
         else:
             raise Exception('Unknown pagination style: %s' % style)
@@ -113,7 +113,7 @@ class PaginateNode(template.Node):
                         query_string = '%s&%s' % (query_string, urlencode({k:v2}))
 
         return query_string
-    
+
     def _digg_style_context(self, number, num_pages, determine_leading_and_trailing_range=True):
         """
         Additional context to be passed to the pagination template:
@@ -155,10 +155,10 @@ class PaginateNode(template.Node):
             #     1 2 3 [4] 5 ... 99 100
             # If it were not for this adjustment, both cases would result in the
             # first output, regardless of the padding value.
-    
-    
+
+
             if main_range[0] <= tail+margin:
-                leading = []                
+                leading = []
                 main_range = [1, max(body, min(number+padding, main_range[1]))]
                 main_range[0] = 1
             else:
@@ -196,10 +196,10 @@ class PaginateNode(template.Node):
             'page_range': reduce(lambda x, y: x+((x and y) and [False])+y,
                 [leading, main_range, trailing]),
             }
-        
+
     def _bootstrap_style_context(self, number, num_pages):
         """
         The context to be passed to the bootstrap pagination template:
         """
-                       
+
         return self._digg_style_context(number, num_pages, False)
