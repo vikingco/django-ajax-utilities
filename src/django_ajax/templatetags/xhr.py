@@ -23,7 +23,7 @@ class XhrNode(Node):
         container = '<div class="xhr_container">%s</div>'
 
         # When this is a XHR request, render the real content
-        if 'request' in context and 'xhr' in context['request'].REQUEST:
+        if 'request' in context and ('xhr' in context['request'].GET or 'xhr' in context['request'].POST):
             return container % self.xhr_nodelist.render(context)
         # Otherwise, render a loading placeholder
         else:
