@@ -123,8 +123,8 @@
                     tabs.find('li').removeClass('selected');
                     this_tab.addClass('selected');
 
-                    // Save path in the URL hash.
-                    location.hash = 'page:' + href;
+                    // Rewrite the url to the new one
+                    history.replaceState({}, loaded_title, href);
 
                     // When no_ajax is used, don't load the tab content. Just show the loader, and allow the default
                     // behaviour of the hyperlink.
@@ -147,12 +147,6 @@
 
                     return link_no_ajax;
                 });
-
-                // If the location hash mathes the path of this tab,
-                // switch to this tab when loading this page.
-                if (! is_helper && location.hash.match( /^#page/))
-                    if (location.hash.replace( /^#page:/, '') == href)
-                        link.click();
             }
 
             // For each tab control
