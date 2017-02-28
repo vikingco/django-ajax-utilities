@@ -8,9 +8,10 @@ from math import ceil
 
 
 class Paginator(object):
-    def __init__(self, object_list, per_page, allow_empty_first_page=True, object_count=None):
+    def __init__(self, object_list, per_page, page_variable, allow_empty_first_page=True, object_count=None):
         self.object_list = object_list
         self.per_page = per_page
+        self.page_variable = page_variable
         self.allow_empty_first_page = allow_empty_first_page
         self._count = object_count
         self._num_pages = None
@@ -121,7 +122,7 @@ def paginate(request,
     Paginate an object list. Wrapper around the Django paginator.
     """
 
-    paginator = Paginator(object_list, num_per_page, object_count=object_count)
+    paginator = Paginator(object_list, num_per_page, object_count=object_count, page_variable=page_variable)
 
     # Page number?
     page_num = request.GET.get(page_variable, None)
