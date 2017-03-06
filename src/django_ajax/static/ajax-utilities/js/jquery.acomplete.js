@@ -1,5 +1,3 @@
-// Author: Jonathan Slenders, City Live
-
 // The following script needs jquery.dimensions in order to get the scrolling work
 //
 //  ======================[ Example usage ]==========================

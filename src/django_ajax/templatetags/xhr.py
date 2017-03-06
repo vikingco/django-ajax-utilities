@@ -7,12 +7,11 @@
 # {% else %}
 #    ...
 # {% endxhr %}
-
-# Author: Jonathan Slenders, City Live
-from django.template import Library, Node, resolve_variable, Template, loader
+from django.template import Library, Node, loader
 from django.conf import settings
 
 register = Library()
+
 
 class XhrNode(Node):
     def __init__(self, xhr_nodelist, else_nodelist):
@@ -37,7 +36,7 @@ class XhrNode(Node):
 @register.tag
 def xhr(parser, token):
     # Nodelist
-    xhr_nodelist = parser.parse(('endxhr', 'else' ))
+    xhr_nodelist = parser.parse(('endxhr', 'else'))
     else_nodelist = None
 
     if parser.tokens[0].contents == 'else':
@@ -50,4 +49,3 @@ def xhr(parser, token):
 
     # Return meta node
     return XhrNode(xhr_nodelist, else_nodelist)
-

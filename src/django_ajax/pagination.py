@@ -1,5 +1,3 @@
-# Author: Jonathan Slenders, City Live
-
 """
 The Paginator and Page classes have been copied from django/core/paginator.py
 But little changes were applied to fit our needs.
@@ -35,7 +33,7 @@ class Paginator(object):
 
     @property
     def count(self):
-        "Returns the total number of objects, across all pages."
+        'Returns the total number of objects, across all pages.'
         if self._count is None:
             try:
                 self._count = self.object_list.count()
@@ -48,7 +46,7 @@ class Paginator(object):
 
     @property
     def num_pages(self):
-        "Returns the total number of pages."
+        'Returns the total number of pages.'
         if self._num_pages is None:
             if self.count == 0 and not self.allow_empty_first_page:
                 self._num_pages = 0
@@ -73,7 +71,7 @@ class Page(object):
         self.paginator = paginator
 
     def __repr__(self):
-        return '<Page %s of %s>' % (self.number, self.paginator.num_pages)
+        return '<Page {} of {}>'.format(self.number, self.paginator.num_pages)
 
     def has_next(self):
         return self.number < self.paginator.num_pages
@@ -111,15 +109,14 @@ class Page(object):
         return self.number * self.paginator.per_page
 
 
-
 def paginate(request,
-                object_list,
-                num_per_page=10,
-                object_count=None,
-                query_string_parameters=None,
-                page_variable='page',
-                default_to_last_page=False,
-                use_get_parameters=False):
+             object_list,
+             num_per_page=10,
+             object_count=None,
+             query_string_parameters=None,
+             page_variable='page',
+             default_to_last_page=False,
+             use_get_parameters=False):
     """
     Paginate an object list. Wrapper around the Django paginator.
     """
@@ -133,8 +130,8 @@ def paginate(request,
     if page_num:
         try:
             page_num = int(page_num)
-            page_num = max(page_num, 1) # Make sure page number isn't negative.
-            page_num = min(page_num, number_of_pages) # Make sure the pagenumber isn't bigger than the number of pages.
+            page_num = max(page_num, 1)  # Make sure page number isn't negative.
+            page_num = min(page_num, number_of_pages)  # Make sure the pagenumber isn't bigger than the number of pages.
         except ValueError:
             page_num = 1
     else:
@@ -148,7 +145,7 @@ def paginate(request,
     output_page = paginator.page(page_num, default_to_last_page)
 
     # Query string parameters
-    output_page.additional_parameters = query_string_parameters or { }
+    output_page.additional_parameters = query_string_parameters or {}
 
     output_page.page_variable = page_variable
     output_page.use_get_parameters = use_get_parameters

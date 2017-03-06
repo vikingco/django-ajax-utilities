@@ -1,9 +1,3 @@
-/* Example CSS for tab pages
- *
- * Author: Jonathan Slenders, City Live nv
- *
- * */
-
 div.tabbing-tabs ul li { display: inline; }
 div.tabbing-tabs ul li a
 {

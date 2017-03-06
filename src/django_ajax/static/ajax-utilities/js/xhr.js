@@ -1,5 +1,3 @@
-// Author: Jonathan Slenders, City Live
-
 $(function() {
     function init(document_containers, path)
     {

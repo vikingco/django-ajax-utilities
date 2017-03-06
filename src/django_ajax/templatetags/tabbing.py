@@ -14,13 +14,11 @@
 #         ...
 #   {% endtabcontent %}
 # {% endtabpage %}
-
-
-# Author: Jonathan Slenders, City Live
-from django.template import Library, Node, resolve_variable, Template, loader, Context
+from django.template import Library, Node, loader, Context
 from django.conf import settings
 
 register = Library()
+
 
 class TabPageNode(Node):
     def __init__(self, tabs_nodelist, tabcontent_nodelist, no_ajax):
@@ -82,4 +80,4 @@ def tabpage(parser, token):
             parser.delete_first_token()
             return TabPageNode(tabs_nodelist, tabcontent_nodelist, no_ajax)
         else:
-            raise Exception('Found unexpected token %s' % t)
+            raise Exception('Found unexpected token {}'.format(t))

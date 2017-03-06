@@ -1,6 +1,3 @@
-/* Author: Jonathan Slenders, City Live */
-
-
 // Don't wait for the whole page to be loaded.
 // (include script at the bottom of the page.)
 

@@ -1,12 +1,11 @@
 # Author: Jonathan Slenders, City Live
 
-import math
+from math import floor
 
 from django import template
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.http import urlencode
-from django.utils.translation import ugettext as _
 from mvne.templatetags.call import template_callable
 
 register = template.Library()
@@ -22,8 +21,8 @@ def paginator(parser, token):
     # Parameters
     page = args[1]
 
-    style=None
-    preload=True
+    style = None
+    preload = True
     for a in args[1:]:
         if a[0:len('style=')] == 'style=':
             style = a[len('style='):]
@@ -91,8 +90,7 @@ class PaginateNode(template.Node):
 
             return render_to_string('pagination/bootstrap-style.html', context)
         else:
-            raise Exception('Unknown pagination style: %s' % style)
-
+            raise Exception('Unknown pagination style: {}'.format(style))
 
     def _querystring(self, page, page_number):
         # Query dict of parameters
@@ -101,16 +99,16 @@ class PaginateNode(template.Node):
             querydict[page.page_variable] = page_number
             querydict = urlencode(querydict)
         except AttributeError:
-            querydict = 'page=%s' % page_number
+            querydict = 'page={}'.format(page_number)
 
         query_string = '?' + querydict
 
         # Use get parameters?
         if page.use_get_parameters:
-            for k,v in page.request.GET.iterlists():
+            for k, v in page.request.GET.iterlists():
                 if k != page.page_variable:
                     for v2 in v:
-                        query_string = '%s&%s' % (query_string, urlencode({k:v2}))
+                        query_string = '{}&{}'.format(query_string, urlencode({k: v2}))
 
         return query_string
 
@@ -129,8 +127,8 @@ class PaginateNode(template.Node):
 
         # put active page in middle of main range
         main_range = map(int, [
-            math.floor(number-body/2.0)+1,  # +1 = shift odd body to right
-            math.floor(number+body/2.0)])
+            floor(number-body/2.0)+1,  # +1 = shift odd body to right
+            floor(number+body/2.0)])
         # adjust bounds
         if main_range[0] < 1:
             main_range = map(abs(main_range[0]-1).__add__, main_range)
@@ -155,7 +153,6 @@ class PaginateNode(template.Node):
             #     1 2 3 [4] 5 ... 99 100
             # If it were not for this adjustment, both cases would result in the
             # first output, regardless of the padding value.
-
 
             if main_range[0] <= tail+margin:
                 leading = []
@@ -193,8 +190,7 @@ class PaginateNode(template.Node):
             'main_range': main_range,
             'leading_range': leading,
             'trailing_range': trailing,
-            'page_range': reduce(lambda x, y: x+((x and y) and [False])+y,
-                [leading, main_range, trailing]),
+            'page_range': reduce(lambda x, y: x+((x and y) and [False]) + y, [leading, main_range, trailing]),
             }
 
     def _bootstrap_style_context(self, number, num_pages):

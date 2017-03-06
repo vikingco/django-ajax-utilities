@@ -17,12 +17,6 @@ DEPENDENCIES:
  - {% macro %} and {% call %} template tags:
       https://github.com/citylive/Django-Template-Tags/tree/master/templatetags
 
-
-AUTHORS:
- - Jonathan Slenders, City Live
- - Parts were inspired by this script: http://djangosnippets.org/snippets/773/
- - Parts were inspired by Django's pagination 
-
 -------------
 1. Pagination
 -------------
