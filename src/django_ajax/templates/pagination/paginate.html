@@ -1,0 +1,27 @@
+{% load macro i18n pagination %}
+
+{% macro "header" %}
+    {% if total > 1 %}
+        <div class="pagination{% if preload %} pagination_preload{% endif %}"><p>
+            {% if prev_page %}
+                <a class="prev more-link" href="{{ request.path }}{% paginated_querystring page_variable prev_page %}">&laquo; {% trans "previous" %}</a>
+            {% endif %}
+                {% blocktrans %}Page <strong>{{ current }}</strong> of <strong>{{ total }}</strong>{% endblocktrans %}
+            {% if next_page %}
+                <a class="next more-link" href="{{ request.path }}{% paginated_querystring page_variable next_page %}">{% trans "next" %} &raquo;</a>
+            {% endif %}
+        </p></div>
+    {% endif %}
+{% endmacro %}
+
+
+<div class="paginate-container paginate-glossyp-style">
+    {{ body|safe }}
+    {% callmacro "header" %}
+</div>
+
+<div class="paginate-loading" style="display: none; ">
+    <div style="margin: 50px;">
+        {% include "django-ajax/_loader.html" %}
+    </div>
+</div>

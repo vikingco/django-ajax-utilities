@@ -21,10 +21,14 @@ DEPENDENCIES:
 1. Pagination
 -------------
 
-In settings.py, configure the styling of the paginator, and add this application:
+In settings.py, add this application:
 
-    > PAGINATOR_STYLE = 'glossyp' # 'glossyp' or 'digg'
     > INSTALLED_APPS += ('django_ajax',)
+
+
+The default styling just renders previous and next buttons. If you want links to more pages rendered, add this setting:
+
+    > PAGINATION_STYLE = 'verbose'
 
 
 In views.py
@@ -80,15 +84,6 @@ ordering column headers. Place the links in a container, classnamed
     > <div class="pagination-helper">
     >   <a href="{{ request.path }}?order_by_name">...</a>
     > </div>
-
-
-It is also possible to override te style defined in the settings.py, by
-defining it in the {% paginate %} template tag. (Add style="digg" or
-style="glossyp")
-
-    > {% paginate paginated_objects style="digg" %}
-    >    ...
-    > {% endpaginate %}
 
 
 The search results of a GET form can be retreived through AJAX, similar to

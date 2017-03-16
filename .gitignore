@@ -21,3 +21,6 @@ pip-log.txt
 # i18n db
 .django.po-backup*
 .djangojs.po-backup*
+
+# pycharm configuration
+.idea
