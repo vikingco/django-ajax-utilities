@@ -1,8 +1,5 @@
 {% load i18n %}
+{% load static from staticfiles %}
 
-{% if STATIC_URL %}
-    <img src="{{ STATIC_URL }}ajax-utilities/img/loader.gif" alt="" />
-{% else %}
-    <img src="{{ MEDIA_URL }}common/img/loader.gif" alt="" />
-{% endif %}
+<img src="{% static 'common/img/loader.gif' %}" alt="[{% trans "Loading" %}]" title="[{% trans "Loading" %}]" />
 {% trans "Loading page" %}...
