@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-ajax-utilities',
-    version='1.2.7',
+    version='1.2.8',
     url='https://github.com/vikingco/django-ajax-utilities',
     license='BSD',
     description='Pagination, xhr and tabbing utilities for the Django framework.',
