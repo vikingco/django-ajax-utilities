@@ -14,7 +14,7 @@
 #         ...
 #   {% endtabcontent %}
 # {% endtabpage %}
-from django.template import Library, Node, loader, Context
+from django.template import Library, Node, loader
 from django.conf import settings
 
 register = Library()
@@ -32,13 +32,13 @@ class TabPageNode(Node):
         content = (self.tabcontent_nodelist.render(context) if self.tabcontent_nodelist else '')
 
         return loader.get_template('tabbing/default-style.html').render(
-                    Context({
+                    {
                             'tabs': tabs,
                             'content': content,
                             'MEDIA_URL': getattr(settings, 'MEDIA_URL', ''),
                             'STATIC_URL': getattr(settings, 'STATIC_URL', ''),
                             'no_ajax': self.no_ajax,
-                            }))
+                            })
 
     def __iter__(self):
         for node in self.tabs_nodelist:
