@@ -3,8 +3,7 @@
 
 var Pagination = new function() {
 
-    this.init = function(processHash, document_containers, setHash)
-    {
+    this.init = function(processHash, document_containers, setHash) {
 		// For each pagination node
         var containers = new Array();
 
@@ -31,18 +30,15 @@ var Pagination = new function() {
         if (setHash == undefined)
             setHash = true;
 
-        function scroll(hash)
-        {
+        function scroll(hash) {
             var target = $('[id=' + hash + ']');
-            if (target.length)
-            {
+            if (target.length) {
                   var offset = target.offset().top;
                   $('html,body').animate({scrollTop: offset}, 350);
             }
         }
 
-        function set_up(container)
-        {
+        function set_up(container) {
             // Find prev/next links
             var prev = container.find('.pagination .prev');
             var next = container.find('.pagination .next');
@@ -54,8 +50,7 @@ var Pagination = new function() {
             if (next.length)
                 next_url = next.attr('href');
 
-            function ajax(url, handler)
-            {
+            function ajax(url, handler) {
                 // URL should start with a slash, but cannot start with two slashes.
                 // (Otherwise we have an XSS vulnerability.)
                 if (url[0] != '/' || url[1] == '/')
@@ -81,8 +76,7 @@ var Pagination = new function() {
                 });
             }
 
-            function showLoader()
-            {
+            function showLoader() {
                 var loader = $('.paginate-loading').eq(0);
 
                 for (var i in containers)
@@ -99,15 +93,13 @@ var Pagination = new function() {
             }
 
             // Replace page AJAX handler
-            function replacePage(url, receivedHtml)
-            {
+            function replacePage(url, receivedHtml) {
 				// Set location hash
 				if (setHash)
 					location.hash = 'page:' + url;
 
 
-                for (var i in containers)
-                {
+                for (var i in containers) {
 					// Empty the paginate nodes
                     containers[i].empty();
                     containers[i].css('height', '');
@@ -124,26 +116,22 @@ var Pagination = new function() {
                 $(document).trigger('paginatorPageReplaced', [ containers ]);
 
                 // When the URL contains a hash, scroll to that element
-                if (location.hash.substr(1).indexOf('#') > 0)
-                {
+                if (location.hash.substr(1).indexOf('#') > 0) {
                     var hash = (''+location.hash).replace( /.*#/, '');
                     scroll(hash);
                 }
                 // Otherwise, make sure that the top of the clicked paginator is visible
-                else
-                {
+                else {
                     var paginatorTop = container.offset().top;
 
-                    if (paginatorTop < $(window).scrollTop() || paginatorTop > $(window).scrollTop() + $(window).height())
-                    {
+                    if (paginatorTop < $(window).scrollTop() || paginatorTop > $(window).scrollTop() + $(window).height()) {
                         $('html,body').animate({scrollTop: paginatorTop}, 350);
                     }
                 }
             }
 
             // Process hash (link with # opened from bookmark)
-            if (processHash && location.hash.match( /^#page/))
-            {
+            if (processHash && location.hash.match( /^#page/)) {
                 var url = location.hash.replace( /^#page:/, '');
                 container.empty();
                 ajax(url, function(html) { replacePage(url,html); });
@@ -158,17 +146,14 @@ var Pagination = new function() {
 
             var preload = $('.pagination_preload').size() > 0;
 
-            if (preload)
-            {
+            if (preload) {
 				if (prev_url)
-                    ajax(prev_url, function(html)
-                    {
+                    ajax(prev_url, function(html) {
                         previousPageHtml = html;
                         if (clickedPrevious) replacePage(prev_url, html);
                     });
                 if (next_url)
-                    ajax(next_url, function(html)
-                    {
+                    ajax(next_url, function(html) {
                         nextPageHtml = html;
                         if (clickedNext) replacePage(next_url, html);
                     });
@@ -201,14 +186,12 @@ var Pagination = new function() {
                 	var url = $(this).attr('href');
                     showLoader();
 
-                    if (url[0] == '#')
-                    {
+                    if (url[0] == '#') {
                         var hash = url.replace( /#/, '');
                         scroll(hash);
                     }
                     else
-                        ajax(url, function(html)
-                        {
+                        ajax(url, function(html) {
 							replacePage(url, html);
                         });
                     return false;
@@ -219,17 +202,14 @@ var Pagination = new function() {
             // They always have method="get" and action="?"
             container.find('form.pagination-form').each(function() {
                 var form = $(this);
-                if (form.attr('method') == 'get' && form.attr('action').match(/.*?/))
-                {
+                if (form.attr('method') == 'get' && form.attr('action').match(/.*?/)) {
                     // Submit handler
-                    form.submit(function()
-                    {
+                    form.submit(function() {
                         // Build submit query string
                         var url = form.attr('action') + form.serialize();
 
                         // AJAX request
-                        ajax(url, function(html)
-                        {
+                        ajax(url, function(html) {
                             replacePage(url, html);
                         });
                         return false;
