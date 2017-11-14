@@ -2,12 +2,12 @@
 // (include script at the bottom of the page.)
 
 var Pagination = new function() {
-   
+
     this.init = function(processHash, document_containers, setHash)
-    {        		
+    {
 		// For each pagination node
         var containers = new Array();
-        
+
         // Create new containers Array after each initialisation
         // (init can be called several times, when the pagination is
         // nested in a tabbed container.)
@@ -26,7 +26,7 @@ var Pagination = new function() {
                     set_up(container);
                 }
             });
-			
+
 		// Make setHash = true the default
         if (setHash == undefined)
             setHash = true;
@@ -77,7 +77,7 @@ var Pagination = new function() {
                         error: function(xhr, ajaxOptions, thrownError) {
                             handler($('<div/>').append(
                                     $('<strong>').append(''+xhr.status + ' ' + thrownError)).html());
-                        } 
+                        }
                 });
             }
 
@@ -100,11 +100,11 @@ var Pagination = new function() {
 
             // Replace page AJAX handler
             function replacePage(url, receivedHtml)
-            {				
+            {
 				// Set location hash
 				if (setHash)
 					location.hash = 'page:' + url;
-				
+
 
                 for (var i in containers)
                 {
@@ -114,7 +114,7 @@ var Pagination = new function() {
 
                     // Fill the paginate containers with the new content
                     receivedHtml = $.trim(receivedHtml);
-                    $(receivedHtml).find('.paginate-container').eq(i).each(function() {						 
+                    $(receivedHtml).find('.paginate-container').eq(i).each(function() {
                         containers[i].append($(this).html());
                         set_up(containers[i]);
                     });
@@ -159,7 +159,7 @@ var Pagination = new function() {
             var preload = $('.pagination_preload').size() > 0;
 
             if (preload)
-            {                 
+            {
 				if (prev_url)
                     ajax(prev_url, function(html)
                     {
@@ -196,7 +196,7 @@ var Pagination = new function() {
             // The digg-paginator also contains direct links to other pages
             // then only the prev and next page.
             container.find('.pagination a, .pagination-helper a, a.pagination-helper').each(function() {
-                
+
                 $(this).click(function (){
                 	var url = $(this).attr('href');
                     showLoader();
@@ -208,7 +208,7 @@ var Pagination = new function() {
                     }
                     else
                         ajax(url, function(html)
-                        {                            
+                        {
 							replacePage(url, html);
                         });
                     return false;
