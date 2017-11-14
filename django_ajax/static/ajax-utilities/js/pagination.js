@@ -13,7 +13,7 @@ var Pagination = new function() {
         // nested in a tabbed container.)
 
         for (var i in document_containers)
-            document_containers[i].find('.paginate-container').each(function() {
+            $(document_containers[i]).find('.paginate-container').each(function() {
                 var container = $(this);
                 // Only execute once for each container.
                 // (remember that init() may be called multiple times,
