@@ -52,8 +52,9 @@ var Pagination = new function() {
 
             function ajax(url, handler) {
                 // URL should start with a slash, but cannot start with two slashes.
+		// we cannot start with "/\". Modern browsers handle backslashes as normal slashes.
                 // (Otherwise we have an XSS vulnerability.)
-                if (url[0] != '/' || url[1] == '/')
+                if (url[0] != '/' || url[1] == '/' || url.startsWith("/\\")
                     url = (''+location).replace( /[#\?].*/, '') + url;
 
                 // Append 'xhr' to make sure all content is loaded.
