@@ -4,7 +4,7 @@
 var Pagination = new function() {
 
     this.init = function(processHash, document_containers, setHash) {
-		// For each pagination node
+        // For each pagination node
         var containers = new Array();
 
         // Create new containers Array after each initialisation
@@ -26,7 +26,7 @@ var Pagination = new function() {
                 }
             });
 
-		// Make setHash = true the default
+        // Make setHash = true the default
         if (setHash == undefined)
             setHash = true;
 
@@ -52,7 +52,7 @@ var Pagination = new function() {
 
             function ajax(url, handler) {
                 // URL should start with a slash, but cannot start with two slashes.
-		// we cannot start with "/\". Modern browsers handle backslashes as normal slashes.
+                // we cannot start with "/\". Modern browsers handle backslashes as normal slashes.
                 // (Otherwise we have an XSS vulnerability.)
                 if (url[0] != '/' || url[1] == '/' || url.startsWith("/\\")
                     url = (''+location).replace( /[#\?].*/, '') + url;
@@ -95,13 +95,13 @@ var Pagination = new function() {
 
             // Replace page AJAX handler
             function replacePage(url, receivedHtml) {
-				// Set location hash
-				if (setHash)
-					location.hash = 'page:' + url;
+                // Set location hash
+                if (setHash)
+                    location.hash = 'page:' + url;
 
 
                 for (var i in containers) {
-					// Empty the paginate nodes
+                    // Empty the paginate nodes
                     containers[i].empty();
                     containers[i].css('height', '');
 
@@ -148,7 +148,7 @@ var Pagination = new function() {
             var preload = $('.pagination_preload').size() > 0;
 
             if (preload) {
-				if (prev_url)
+                if (prev_url)
                     ajax(prev_url, function(html) {
                         previousPageHtml = html;
                         if (clickedPrevious) replacePage(prev_url, html);
@@ -184,7 +184,7 @@ var Pagination = new function() {
             container.find('.pagination a, .pagination-helper a, a.pagination-helper').each(function() {
 
                 $(this).click(function (){
-                	var url = $(this).attr('href');
+                    var url = $(this).attr('href');
                     showLoader();
 
                     if (url[0] == '#') {
@@ -193,7 +193,7 @@ var Pagination = new function() {
                     }
                     else
                         ajax(url, function(html) {
-							replacePage(url, html);
+                            replacePage(url, html);
                         });
                     return false;
                 });
